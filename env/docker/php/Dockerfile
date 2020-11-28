@@ -26,9 +26,8 @@ RUN apt-get update \
 RUN composer global require laravel/installer
 RUN echo "export PATH=~/.composer/vendor/bin:$PATH" >> ~/.bash_profile
 
-WORKDIR /var/www/html
-RUN ~/.composer/vendor/bin/laravel new wk
-COPY wk /var/www/html/wk
-WORKDIR /var/www/html/wk
-RUN composer require laravel/ui
-RUN php artisan ui react
+# WORKDIR /var/www/html
+# RUN ~/.composer/vendor/bin/laravel --jet new wk
+# WORKDIR /var/www/html/wk
+# RUN composer require laravel/ui
+# RUN php artisan ui react
