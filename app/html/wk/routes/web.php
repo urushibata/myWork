@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MenuController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,6 +24,8 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return Inertia\Inertia::render('Dashboard');
 })->name('dashboard');
 
-Route::get('/{any}', function() {
-    return view('app');
-})->where('any', '.*');
+Route::get('/{any}', function() {return view('app');})->where('any', '.*');
+
+Route::post('getProfile', [MenuController::class, 'getProfile']);
+Route::post('imageRecognition/fileupload', [ImageRecognitionController::class, 'upload']);
+Route::post('imageRecognition/postDetectedResult', [ImageRecognitionController::class, 'postDetectedResult']);
