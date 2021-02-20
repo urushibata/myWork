@@ -106,7 +106,7 @@ return [
     'same'                 => ':attributeと:otherには同じ値を指定してください。',
     'size'                 => [
         'numeric' => ':attributeは:sizeを指定してください。',
-        'file'    => ':attributeのファイルは、:sizeキロバイトでなくてはなりません。',
+        'file'    => ':attributeは、:sizeキロバイトでなくてはなりません。',
         'string'  => ':attributeは:size文字で指定してください。',
         'array'   => ':attributeは:size個指定してください。',
     ],
@@ -146,6 +146,8 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'file' => 'ファイル'
+    ],
 
 ];

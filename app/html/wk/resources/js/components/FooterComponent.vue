@@ -1,9 +1,9 @@
 <template>
-  <v-footer dark padless>
-    <v-card class="flex" flat tile>
+  <v-footer padless>
+    <v-card color="grey lighten-4" class="flex" flat tile>
       <v-card-title>
         <v-spacer></v-spacer>
-        <v-btn v-for="icon in icons" :key="icon" class="mx-4" dark icon>
+        <v-btn v-for="icon in icons" :key="icon" class="mx-4" icon>
           <v-icon size="24px">
             {{ icon }}
           </v-icon>

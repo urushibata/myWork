@@ -2,7 +2,8 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 
 import MenuComponent from './components/MenuComponent.vue';
-import ImageRekognitionComponent from './components/ImageRekognitionComponent';
+import ImageRekognitionDetectComponent from './components/ImageRekognition/ImageRekognitionDetectComponent';
+import ImageRekognitionResultComponent from './components/ImageRekognition/ImageRekognitionResultComponent';
 
 Vue.use(VueRouter);
 
@@ -15,9 +16,14 @@ const router = {
             component: MenuComponent
         },
         {
-            path: '/imageRekognition',
-            name: 'imageRekognition',
-            component: ImageRekognitionComponent
+            path: '/imageRekognition/detect',
+            name: 'imageRekognitionDetect',
+            component: ImageRekognitionDetectComponent,
+        },
+        {
+            path: '/imageRekognition/result',
+            name: 'imageRekognitionResult',
+            component: ImageRekognitionResultComponent,
         },
     ]
 };

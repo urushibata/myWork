@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ImageRekognitionController;
 use App\Http\Controllers\MenuController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,18 +15,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-/*
-Route::get('/', function () {
-    return view('top');
-});
-*/
-
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return Inertia\Inertia::render('Dashboard');
-})->name('dashboard');
-
 Route::get('/{any}', function() {return view('app');})->where('any', '.*');
 
 Route::post('getProfile', [MenuController::class, 'getProfile']);
-Route::post('imageRecognition/fileupload', [ImageRecognitionController::class, 'upload']);
-Route::post('imageRecognition/postDetectedResult', [ImageRecognitionController::class, 'postDetectedResult']);
+Route::post('imageRekognition/fileupload', [ImageRekognitionController::class, 'upload']);
+Route::post('imageRekognition/postDetectedResult', [ImageRekognitionController::class, 'postDetectedResult']);
+Route::post('imageRekognition/getList', [ImageRekognitionController::class, 'getList']);
+

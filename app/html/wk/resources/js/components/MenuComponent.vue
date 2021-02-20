@@ -94,7 +94,7 @@ export default {
       linkGroups: [
         {
           group: "アプリケーション",
-          links: [{ url: "/imageRekognition", label: "画像解析" }],
+          links: [{ url: "/imageRekognition/detect", label: "画像解析" }],
         },
       ],
       profile: {

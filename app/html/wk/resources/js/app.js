@@ -13,6 +13,7 @@ import vuetify from "./vuetify";
 
 import MyFrameComponent from "./components/MyFrameComponent";
 import FooterComponent from "./components/FooterComponent";
+import SnackbarComponent from "./components/SnackbarComponent";
 import MyProfileComponent from "./components/MyProfileComponent";
 
 /**
@@ -28,6 +29,7 @@ import MyProfileComponent from "./components/MyProfileComponent";
 
 Vue.component('my-frame-component', MyFrameComponent);
 Vue.component('footer-component', FooterComponent);
+Vue.component('snackbar-component', SnackbarComponent);
 Vue.component('my-profile-component', MyProfileComponent);
 
 /**
