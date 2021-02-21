@@ -1,0 +1,19 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      php: 7.4
+  build:
+    commands:
+      - cd app/html/wk
+      - composer install
+      #- ./vendor/bin/phpunit ../tests/
+      #- echo Build started on `date`
+artifacts:
+  files:
+    - app/html/wk/composer.json
+    - app/html/wk/composer.lock
+    - app/html/wk/**/*
+    #- hooks/**/*
+    #- appspec.yml

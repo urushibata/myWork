@@ -30,4 +30,3 @@ RUN echo "export PATH=~/.composer/vendor/bin:$PATH" >> ~/.bash_profile
 # RUN ~/.composer/vendor/bin/laravel --jet new wk
 # WORKDIR /var/www/html/wk
 # RUN composer require laravel/ui
-# RUN php artisan ui react

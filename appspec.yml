@@ -1,0 +1,14 @@
+version: 0.0
+os: linux
+#files:
+  #- source: app/oauth
+  #  destination: /home/bitnami/htdocs/oauth
+  #- source: app/composer
+  #  destination: /home/bitnami/htdocs/composer
+#permissions:
+  #- object: /home/bitnami/htdocs
+  #  owner: bitnami
+  #  group: bitnami-admins
+#hooks:
+  #AfterInstall:
+  #  - location: hooks/after_install.sh

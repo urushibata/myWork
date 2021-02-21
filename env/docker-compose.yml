@@ -6,6 +6,7 @@ services:
     build:
       context: ./docker/php
       dockerfile: Dockerfile
+    image: my_work_php
     volumes:
       - ../app:/var/www
       - ./docker/php/php.ini:/usr/local/etc/php/php.ini
