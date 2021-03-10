@@ -70,13 +70,17 @@
     <snackbar-component
       :snackbar="snackbar"
       :message="snackbarMessage"
-      :multiline="true"
+      :multi-line="true"
     >
       <template v-slot:link
-        ><v-btn text to="/imageRekognition/result"></v-btn
-      ></template>
+        ><v-btn text color="yellow lighten-2" to="/imageRekognition/result"
+          >解析結果を確認する</v-btn
+        ></template
+      >
     </snackbar-component>
-    <v-overlay :value="overlay"></v-overlay>
+    <v-overlay :value="overlay">
+      <v-progress-circular indeterminate size="64"></v-progress-circular>
+    </v-overlay>
   </v-card>
 </template>
 
@@ -143,8 +147,10 @@ export default {
       axios
         .post("/imageRekognition/fileupload", formData)
         .then((response) => {
-          this.snackbar = true;
-          this.snackbarMessage = `アップロードに成功しました。: ${response.data.resource_original_name}`;
+          response.data.forEach((res) => {
+            this.snackbar = true;
+            this.snackbarMessage = `アップロードに成功しました。: ${res.resource_original_name}`;
+          });
 
           console.log(response);
           this.fileInfo = [];

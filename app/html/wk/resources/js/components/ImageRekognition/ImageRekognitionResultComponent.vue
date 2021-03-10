@@ -28,6 +28,14 @@
       :imageSrc="imageSrc"
       :detectResult="detectResult"
     />
+
+    <v-overlay :value="imageLoading">
+      <v-progress-circular
+        indeterminate
+        color="amber"
+        size="64"
+      ></v-progress-circular>
+    </v-overlay>
   </v-card>
 </template>
 
@@ -62,6 +70,7 @@ export default {
       imageSrc: null,
       detectResult: null,
       errorMessage: null,
+      imageLoading: false,
     };
   },
   methods: {
@@ -72,11 +81,14 @@ export default {
       });
     },
     clickRow(row) {
+      this.imageLoading = true;
+      this.imageSrc = null;
       axios
         .get("/api/rekognition_resource/" + row.id)
         .then((response) => {
           this.imageSrc = row.path;
           this.detectResult = response.data;
+          this.imageLoading = false;
         })
         .catch((error) => {
           this.imageSrc = null;

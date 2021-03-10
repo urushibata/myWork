@@ -1860,10 +1860,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      icons: ["mdi-twitter", "mdi-github"]
+      icons: [{
+        name: "mdi-twitter",
+        url: "https://twitter.com/s_urushibata"
+      }, {
+        name: "mdi-github",
+        url: "https://github.com/urushibata/myWork"
+      }]
     };
   }
 });
@@ -1883,6 +1891,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _ImageRekognitionTabsComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ImageRekognitionTabsComponent */ "./resources/js/components/ImageRekognition/ImageRekognitionTabsComponent.vue");
 /* harmony import */ var _ImageRekognitionExplanationComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ImageRekognitionExplanationComponent */ "./resources/js/components/ImageRekognition/ImageRekognitionExplanationComponent.vue");
+//
+//
+//
+//
 //
 //
 //
@@ -2035,8 +2047,10 @@ __webpack_require__.r(__webpack_exports__);
       console.log(this.selectedRekognitionType);
       this.overlay = true;
       axios.post("/imageRekognition/fileupload", formData).then(function (response) {
-        _this.snackbar = true;
-        _this.snackbarMessage = "\u30A2\u30C3\u30D7\u30ED\u30FC\u30C9\u306B\u6210\u529F\u3057\u307E\u3057\u305F\u3002: ".concat(response.data.resource_original_name);
+        response.data.forEach(function (res) {
+          _this.snackbar = true;
+          _this.snackbarMessage = "\u30A2\u30C3\u30D7\u30ED\u30FC\u30C9\u306B\u6210\u529F\u3057\u307E\u3057\u305F\u3002: ".concat(res.resource_original_name);
+        });
         console.log(response);
         _this.fileInfo = [];
       })["catch"](function (error) {
@@ -2119,11 +2133,19 @@ __webpack_require__.r(__webpack_exports__);
     return {
       imageDisplay: false,
       boundingBox: null,
-      isLoaded: false,
-      imageHight: null,
-      imageWidth: null,
+
+      /*
+       * 0: not load
+       * 1: now loading
+       * 2: loaded
+       */
+      loadState: 0,
+      iamgeObj: null,
+      imageContext: null,
+      imageHight: 0,
+      imageWidth: 0,
       analysis: null,
-      selectedIndex: null
+      selectedIndex: 0
     };
   },
   computed: {
@@ -2150,19 +2172,32 @@ __webpack_require__.r(__webpack_exports__);
     selectedIndex: function selectedIndex(newIndex, oldIndex) {
       console.log("selectedIndex changed new:" + newIndex + " old:" + oldIndex);
 
-      if (oldIndex !== null) {
-        this.boundingBox[oldIndex].clear();
-      }
+      if (this.boundingBox !== null) {
+        if (oldIndex !== null) {
+          this.boundingBox[oldIndex].clear();
+        }
 
-      if (newIndex !== null) {
-        this.boundingBox[newIndex].show();
+        if (newIndex !== null) {
+          this.boundingBox[newIndex].show();
+        }
       }
     },
     imageSrc: function imageSrc(newImage, oldImage) {
-      this.isLoaded = false;
+      if (this.imageContext) {
+        this.imageContext.clearRect(0, 0, this.imageContext.canvas.width, this.imageContext.canvas.height);
+      }
+
+      this.loadState = 0;
+      this.imageObj = null;
+      this.imageContext = null;
+      this.imageWidth = 0;
+      this.imageHight = 0;
+      this.boundingBox = null;
+      this.selectedIndex = 0;
 
       if (!!newImage) {
         this.imageDisplay = true;
+        this.createCanvas();
       } else {
         this.imageDisplay = false;
       }
@@ -2172,8 +2207,9 @@ __webpack_require__.r(__webpack_exports__);
         this.analysis = newResult[this.detectType];
       }
     },
-    isLoaded: function isLoaded(after, before) {
-      if (after) {
+    loadState: function loadState(after, before) {
+      if (after === 2) {
+        this.createBoundingBox();
         this.boundingBox[this.selectedIndex].show();
       }
     }
@@ -2186,43 +2222,41 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       console.log("called createCanvas");
-      var context = this.$refs.canvas.getContext("2d");
-      var imgObj = new Image();
-      imgObj.src = this.imageSrc;
+      this.loadState = 1;
+      this.imageContext = this.$refs.canvas.getContext("2d");
+      this.imageObj = new Image();
+      this.imageObj.src = this.imageSrc;
 
-      imgObj.onload = function () {
-        _this.imageHight = imgObj.naturalHeight;
-        _this.imageWidth = imgObj.naturalWidth;
-        _this.isLoaded = true;
+      this.imageObj.onload = function () {
+        _this.loadState = 2;
+        _this.imageHight = _this.imageObj.naturalHeight;
+        _this.imageWidth = _this.imageObj.naturalWidth;
       };
+    },
+    createBoundingBox: function createBoundingBox() {
+      var _this2 = this;
 
       this.boundingBox = this.getBoundingBox().map(function (bb, i) {
         var convertBoxsize = function convertBoxsize(len) {
           return len * 100 + "%";
         };
 
-        var box = {};
-
-        if (!bb) {
-          return {
-            i: i,
-            box: box,
-            show: function show() {},
-            clear: function clear() {}
-          };
-        }
-
-        box.Width = convertBoxsize(bb.Width);
-        box.Height = convertBoxsize(bb.Height);
-        box.Left = convertBoxsize(bb.Left);
-        box.Top = convertBoxsize(bb.Top);
+        var box = {
+          Width: convertBoxsize(bb.Width),
+          Height: convertBoxsize(bb.Height),
+          Left: convertBoxsize(bb.Left),
+          Top: convertBoxsize(bb.Top)
+        };
 
         var show = function show() {
-          context.drawImage(imgObj, bb.Left * _this.imageWidth, bb.Top * _this.imageHight, bb.Width * _this.imageWidth, bb.Height * _this.imageHight, 0, 0, bb.Width * _this.imageWidth, bb.Height * _this.imageHight);
+          _this2.$refs.canvas.width = bb.Width * _this2.imageWidth;
+          _this2.$refs.canvas.height = bb.Height * _this2.imageHight;
+
+          _this2.imageContext.drawImage(_this2.imageObj, bb.Left * _this2.imageWidth, bb.Top * _this2.imageHight, bb.Width * _this2.imageWidth, bb.Height * _this2.imageHight, 0, 0, bb.Width * _this2.imageWidth, bb.Height * _this2.imageHight);
         };
 
         var clear = function clear() {
-          context.clearRect(0, 0, bb.Width * _this.imageWidth, bb.Height * _this.imageHight);
+          _this2.imageContext.clearRect(0, 0, bb.Width * _this2.imageWidth, bb.Height * _this2.imageHight);
         };
 
         return {
@@ -2237,7 +2271,9 @@ __webpack_require__.r(__webpack_exports__);
       var typeRoot = this.detectResult[this.detectType];
 
       if (this.detectType === "FaceDetails") {
-        return typeRoot.BoundingBox;
+        return typeRoot.map(function (face) {
+          return face.BoundingBox;
+        });
       } else if (this.detectType == "Labels") {
         return typeRoot.map(function (label) {
           return label.Instances.map(function (ins) {
@@ -2250,11 +2286,6 @@ __webpack_require__.r(__webpack_exports__);
         });
       }
     }
-  },
-  beforeUpdate: function beforeUpdate() {
-    console.log("before update");
-    this.selectFrame(this.selectedIndex);
-    this.createCanvas();
   }
 });
 
@@ -2472,6 +2503,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -2505,7 +2544,8 @@ __webpack_require__.r(__webpack_exports__);
       }],
       imageSrc: null,
       detectResult: null,
-      errorMessage: null
+      errorMessage: null,
+      imageLoading: false
     };
   },
   methods: {
@@ -2520,9 +2560,12 @@ __webpack_require__.r(__webpack_exports__);
     clickRow: function clickRow(row) {
       var _this2 = this;
 
+      this.imageLoading = true;
+      this.imageSrc = null;
       axios.get("/api/rekognition_resource/" + row.id).then(function (response) {
         _this2.imageSrc = row.path;
         _this2.detectResult = response.data;
+        _this2.imageLoading = false;
       })["catch"](function (error) {
         _this2.imageSrc = null;
         _this2.detectResult = null;
@@ -2623,35 +2666,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-var skill = [{
-  id: 1,
-  type: "言語",
-  set: ["Java", "C#", "PHP", "JavaScript", "HTML", "CSS", "Python"]
-}, {
-  id: 2,
-  type: "フレームワーク、ライブラリ",
-  set: ["Struts", "Spring", "CakePHP", "Laravel", "Smarty", "JQuery", "Vue.js", "Bootstrap"]
-}, {
-  id: 3,
-  type: "DB",
-  set: ["Oracle", "SQL Server", "MySQL"]
-}, {
-  id: 4,
-  type: "テスト",
-  set: ["JUnit", "NUnit", "PHPUnit"]
-}, {
-  id: 5,
-  type: "ソース管理",
-  set: ["Git", "Svn", "TFS"]
-}, {
-  id: 6,
-  type: "AWS",
-  set: ["EC2", "IAM", "VPC", "RDB", "Lambda", "FSx for Windows", "Codecommit", "DMS", "Cloud watch", "Cloud Trail"]
-}, {
-  id: 7,
-  type: "管理ツール",
-  set: ["Jira", "Trello", "Confluence"]
-}];
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   beforeRouteEnter: function beforeRouteEnter(to, from, next) {
     next(function (vm) {
@@ -2686,7 +2703,7 @@ var skill = [{
           alt: "urushibata avatar",
           src: "https://scontent.fngo4-1.fna.fbcdn.net/v/t1.0-9/76609813_121552215926001_5034201832738521088_n.jpg?_nc_cat=101&ccb=2&_nc_sid=09cbfe&_nc_ohc=Gwll3HmJanUAX_oWtY6&_nc_ht=scontent.fngo4-1.fna&oh=e144c5d385542bf6911872eb6d2c6565&oe=6039C948"
         },
-        skillSet: skill
+        skillSet: {}
       }
     };
   },
@@ -2840,18 +2857,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     snackbar: {
       type: Boolean
     },
     message: {
-      type: String
+      type: String,
+      "default": ""
     },
     multiLine: {
       type: Boolean,
@@ -21686,12 +21699,35 @@ var render = function() {
               _vm._v(" "),
               _vm._l(_vm.icons, function(icon) {
                 return _c(
-                  "v-btn",
-                  { key: icon, staticClass: "mx-4", attrs: { icon: "" } },
+                  "div",
+                  { key: icon.name },
                   [
-                    _c("v-icon", { attrs: { size: "24px" } }, [
-                      _vm._v("\n          " + _vm._s(icon) + "\n        ")
-                    ])
+                    _c(
+                      "v-btn",
+                      {
+                        staticClass: "mx-4",
+                        attrs: {
+                          text: "",
+                          icon: "",
+                          href: icon.url,
+                          target: "_blank"
+                        }
+                      },
+                      [
+                        _c(
+                          "v-icon",
+                          { attrs: { size: "24px", to: icon.url } },
+                          [
+                            _vm._v(
+                              "\n            " +
+                                _vm._s(icon.name) +
+                                "\n          "
+                            )
+                          ]
+                        )
+                      ],
+                      1
+                    )
                   ],
                   1
                 )
@@ -21911,16 +21947,24 @@ var render = function() {
         attrs: {
           snackbar: _vm.snackbar,
           message: _vm.snackbarMessage,
-          multiline: true
+          "multi-line": true
         },
         scopedSlots: _vm._u([
           {
             key: "link",
             fn: function() {
               return [
-                _c("v-btn", {
-                  attrs: { text: "", to: "/imageRekognition/result" }
-                })
+                _c(
+                  "v-btn",
+                  {
+                    attrs: {
+                      text: "",
+                      color: "yellow lighten-2",
+                      to: "/imageRekognition/result"
+                    }
+                  },
+                  [_vm._v("解析結果を確認する")]
+                )
               ]
             },
             proxy: true
@@ -21928,7 +21972,16 @@ var render = function() {
         ])
       }),
       _vm._v(" "),
-      _c("v-overlay", { attrs: { value: _vm.overlay } })
+      _c(
+        "v-overlay",
+        { attrs: { value: _vm.overlay } },
+        [
+          _c("v-progress-circular", {
+            attrs: { indeterminate: "", size: "64" }
+          })
+        ],
+        1
+      )
     ],
     1
   )
@@ -21976,7 +22029,7 @@ var render = function() {
         [
           _c(
             "v-img",
-            { attrs: { src: _vm.imageSrc } },
+            { attrs: { src: _vm.imageSrc, contain: "" } },
             _vm._l(_vm.boundingBox, function(b, i) {
               return _c(
                 "div",
@@ -22271,7 +22324,18 @@ var render = function() {
       _vm._v(" "),
       _c("image-rekognition-detect-viewer-component", {
         attrs: { imageSrc: _vm.imageSrc, detectResult: _vm.detectResult }
-      })
+      }),
+      _vm._v(" "),
+      _c(
+        "v-overlay",
+        { attrs: { value: _vm.imageLoading } },
+        [
+          _c("v-progress-circular", {
+            attrs: { indeterminate: "", color: "amber", size: "64" }
+          })
+        ],
+        1
+      )
     ],
     1
   )
@@ -22398,6 +22462,13 @@ var render = function() {
                         attrs: { light: "", height: "100", to: ll.url }
                       },
                       [
+                        _c("v-img", {
+                          attrs: {
+                            src:
+                              "https://3.bp.blogspot.com/-4ZXrEpcG74A/WlGpFb87TQI/AAAAAAABJkU/22NohgkRDOIQeh_V4QeDE0yVtBvUheRLACLcBGAs/s800/ai_image_gazou_ninshiki.png"
+                          }
+                        }),
+                        _vm._v(" "),
                         _c("v-card-title", [_vm._v(_vm._s(ll.label))]),
                         _vm._v(" "),
                         _c("v-scroll-y-transition", [
@@ -22685,12 +22756,7 @@ var render = function() {
         expression: "innerSnackbar"
       }
     },
-    [
-      _vm._v("\n  " + _vm._s(_vm.innerMessage) + "\n  "),
-      _vm._t("link"),
-      _vm._v(" "),
-      _vm._t("default")
-    ],
+    [_vm._v("\n  " + _vm._s(_vm.innerMessage) + "\n  "), _vm._t("link")],
     2
   )
 }

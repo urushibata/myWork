@@ -12,7 +12,6 @@ class MenuController extends Controller
 {
     public function getProfile(Request $request)
     {
-        Log::debug('called getProfile');
         $data = [
             'links' => [
                 [

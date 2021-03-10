@@ -1,7 +1,7 @@
 <template>
   <v-row v-show="imageDisplay" class="pa-6 my-6">
     <v-col cols="6">
-      <v-img :src="imageSrc">
+      <v-img :src="imageSrc" contain>
         <div v-for="(b, i) in boundingBox" :key="b.i">
           <v-sheet
             class="frame"
@@ -14,9 +14,9 @@
       </v-img>
     </v-col>
     <v-col cols="6">
-      <v-card elevation="0" v-model="selectedIndex"
-        ><canvas ref="canvas"
-      /></v-card>
+      <v-card elevation="0" v-model="selectedIndex">
+          <canvas ref="canvas" />
+      </v-card>
       <v-row v-if="analysis !== null">
         <image-rekognition-parser-component
           :detectType="detectType"
@@ -43,11 +43,18 @@ export default {
     return {
       imageDisplay: false,
       boundingBox: null,
-      isLoaded: false,
-      imageHight: null,
-      imageWidth: null,
+      /*
+       * 0: not load
+       * 1: now loading
+       * 2: loaded
+       */
+      loadState: 0,
+      iamgeObj: null,
+      imageContext: null,
+      imageHight: 0,
+      imageWidth: 0,
       analysis: null,
-      selectedIndex: null,
+      selectedIndex: 0,
     };
   },
   computed: {
@@ -74,18 +81,35 @@ export default {
     selectedIndex: function (newIndex, oldIndex) {
       console.log("selectedIndex changed new:" + newIndex + " old:" + oldIndex);
 
-      if (oldIndex !== null) {
-        this.boundingBox[oldIndex].clear();
-      }
-      if (newIndex !== null) {
-        this.boundingBox[newIndex].show();
+      if (this.boundingBox !== null) {
+        if (oldIndex !== null) {
+          this.boundingBox[oldIndex].clear();
+        }
+        if (newIndex !== null) {
+          this.boundingBox[newIndex].show();
+        }
       }
     },
     imageSrc: function (newImage, oldImage) {
-      this.isLoaded = false;
+      if (this.imageContext) {
+        this.imageContext.clearRect(
+          0,
+          0,
+          this.imageContext.canvas.width,
+          this.imageContext.canvas.height
+        );
+      }
+      this.loadState = 0;
+      this.imageObj = null;
+      this.imageContext = null;
+      this.imageWidth = 0;
+      this.imageHight = 0;
+      this.boundingBox = null;
+      this.selectedIndex = 0;
 
       if (!!newImage) {
         this.imageDisplay = true;
+        this.createCanvas();
       } else {
         this.imageDisplay = false;
       }
@@ -95,8 +119,9 @@ export default {
         this.analysis = newResult[this.detectType];
       }
     },
-    isLoaded: function (after, before) {
-      if (after) {
+    loadState: function (after, before) {
+      if (after === 2) {
+        this.createBoundingBox();
         this.boundingBox[this.selectedIndex].show();
       }
     },
@@ -108,31 +133,32 @@ export default {
     createCanvas: function () {
       console.log("called createCanvas");
 
-      const context = this.$refs.canvas.getContext("2d");
-      const imgObj = new Image();
-      imgObj.src = this.imageSrc;
-      imgObj.onload = () => {
-        this.imageHight = imgObj.naturalHeight;
-        this.imageWidth = imgObj.naturalWidth;
-        this.isLoaded = true;
+      this.loadState = 1;
+      this.imageContext = this.$refs.canvas.getContext("2d");
+      this.imageObj = new Image();
+      this.imageObj.src = this.imageSrc;
+      this.imageObj.onload = () => {
+        this.loadState = 2;
+        this.imageHight = this.imageObj.naturalHeight;
+        this.imageWidth = this.imageObj.naturalWidth;
       };
-
+    },
+    createBoundingBox: function () {
       this.boundingBox = this.getBoundingBox().map((bb, i) => {
         const convertBoxsize = (len) => len * 100 + "%";
-        const box = {};
-
-        if (!bb) {
-          return { i, box, show: () => {}, clear: () => {} };
-        }
-
-        box.Width = convertBoxsize(bb.Width);
-        box.Height = convertBoxsize(bb.Height);
-        box.Left = convertBoxsize(bb.Left);
-        box.Top = convertBoxsize(bb.Top);
+        const box = {
+          Width: convertBoxsize(bb.Width),
+          Height: convertBoxsize(bb.Height),
+          Left: convertBoxsize(bb.Left),
+          Top: convertBoxsize(bb.Top),
+        };
 
         const show = () => {
-          context.drawImage(
-            imgObj,
+          this.$refs.canvas.width = bb.Width * this.imageWidth;
+          this.$refs.canvas.height = bb.Height * this.imageHight;
+
+          this.imageContext.drawImage(
+            this.imageObj,
             bb.Left * this.imageWidth,
             bb.Top * this.imageHight,
             bb.Width * this.imageWidth,
@@ -145,7 +171,7 @@ export default {
         };
 
         const clear = () => {
-          context.clearRect(
+          this.imageContext.clearRect(
             0,
             0,
             bb.Width * this.imageWidth,
@@ -160,7 +186,7 @@ export default {
       const typeRoot = this.detectResult[this.detectType];
 
       if (this.detectType === "FaceDetails") {
-        return typeRoot.BoundingBox;
+        return typeRoot.map((face) => face.BoundingBox);
       } else if (this.detectType == "Labels") {
         return typeRoot
           .map((label) => {
@@ -173,11 +199,6 @@ export default {
         });
       }
     },
-  },
-  beforeUpdate: function () {
-    console.log("before update");
-    this.selectFrame(this.selectedIndex);
-    this.createCanvas();
   },
 };
 </script>

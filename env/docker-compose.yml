@@ -7,6 +7,17 @@ services:
       context: ./docker/php
       dockerfile: Dockerfile
     image: my_work_php
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: myWork-db
+      DB_PORT: 3306
+      DB_DATABASE: wk
+      DB_USERNAME: docker
+      DB_PASSWORD: docker
+      AWS_ACCESS_KEY_ID: AKIAQGGLKQDJGWVPLR4Q
+      AWS_SECRET_ACCESS_KEY: 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
+      LOG_CHANNEL: daily
+      LOG_LEVEL: debug
     volumes:
       - ../app:/var/www
       - ./docker/php/php.ini:/usr/local/etc/php/php.ini
@@ -16,11 +27,16 @@ services:
   nginx:
     image: nginx
     container_name: myWork-nginx
+    environment:
+      NGINX_PORT: 80
+      NGINX_DOCUMENT_ROOT: /var/www/html/wk/public
+      MYWORK_APP_HOST: php
+      MYWORK_APP_PORT: 9000
     ports:
       - 8090:80
     volumes:
       - ../app:/var/www
-      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./docker/nginx/default.template.conf:/etc/nginx/templates/default.conf.template
     depends_on:
       - php
 
@@ -33,7 +49,6 @@ services:
       MYSQL_USER: docker
       MYSQL_PASSWORD: docker
       TZ: "Asia/Tokyo"
-    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     volumes:
       - ./docker/db/data:/var/lib/mysql
       - ./docker/db/my.cnf:/etc/mysql/conf.d/my.cnf

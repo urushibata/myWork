@@ -7,11 +7,9 @@ use App\Models\RekognitionResource;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
-use Aws\DynamoDb\Exception\DynamoDbException;
-use Aws\DynamoDb\Marshaler;
-use Aws\Sdk;
+//use Aws\Sdk;
 use Exception;
-use Illuminate\Http\Exceptions\HttpResponseException;
+//use Illuminate\Http\Exceptions\HttpResponseException;
 
 /**
  * ImageRekognitionController
@@ -85,65 +83,6 @@ class ImageRekognitionController extends Controller
                 )
             );
         } catch (Exception $e) {
-        }
-    }
-
-    /**
-     * 解析結果表示
-     *
-     * @param RekognitionResource $rekognition_resource 表示対象のModel
-     */
-    public function show(RekognitionResource $rekognition_resource)
-    {
-        Log::debug("show:" . $rekognition_resource);
-
-        $sdk = new Sdk([
-            'endpoint'   => env('DYNAMODB_ENDPOINT'),
-            'region'   => env('AWS_DEFAULT_REGION'),
-            'version'  => 'latest'
-        ]);
-        $dynamodb = $sdk->createDynamoDb();
-        $marshaler = new Marshaler();
-        $key = $marshaler->marshalJson('{"image_name": "' . $rekognition_resource->resource_path . '"}');
-        $params = [
-            'TableName' => 'image-detected',
-            'Key' => $key,
-        ];
-
-        try {
-            $result = $dynamodb->getItem($params);
-
-            if ($result->hasKey('Item')) {
-                return $result->get('Item')['detected_result']['S'];
-            } else {
-                return response()->json([
-                    'errors' => "key not exsits."
-                ], 422);
-            }
-        } catch (DynamoDbException $e) {
-            Log::error($e->getMessage());
-        } catch (Exception $e) {
-            Log::error($e->getMessage());
-        }
-    }
-
-    /**
-     * RekognitionResourceを削除します。
-     *
-     * @param RekognitionResource $rekognition_resource 削除対象のModel
-     */
-    public function destroy(RekognitionResource $rekognition_resource)
-    {
-        Log::debug('destroy method:' . $rekognition_resource);
-
-        try {
-            $rekognition_resource->delete();
-
-            return [
-                'id' => $rekognition_resource->id,
-            ];
-        } catch (Exception $e) {
-            Log::error($e->getMessage());
         }
     }
 }

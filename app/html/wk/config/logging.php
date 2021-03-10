@@ -17,7 +17,6 @@ return [
     |
     */
 
-    //'default' => env('LOG_CHANNEL', 'stack'),
     'default' => env('LOG_CHANNEL', 'daily'),
 
     /*
@@ -70,6 +69,14 @@ return [
             'handler_with' => [
                 'host' => env('PAPERTRAIL_URL'),
                 'port' => env('PAPERTRAIL_PORT'),
+            ],
+        ],
+
+        'stdout' => [
+            'driver' => 'monolog',
+            'handler' => StreamHandler::class,
+            'with' => [
+                'stream' => 'php://stdout',
             ],
         ],
 

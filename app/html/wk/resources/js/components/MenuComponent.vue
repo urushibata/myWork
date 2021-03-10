@@ -11,6 +11,9 @@
 
         <v-col v-for="ll in lg.links" :key="ll.label" cols="6" md="2">
           <v-card class="d-flex align-center" light height="100" :to="ll.url">
+            <v-img
+              src="https://3.bp.blogspot.com/-4ZXrEpcG74A/WlGpFb87TQI/AAAAAAABJkU/22NohgkRDOIQeh_V4QeDE0yVtBvUheRLACLcBGAs/s800/ai_image_gazou_ninshiki.png"
+            />
             <v-card-title>{{ ll.label }}</v-card-title>
 
             <v-scroll-y-transition>
@@ -24,64 +27,6 @@
 </template>
 
 <script>
-var skill = [
-  {
-    id: 1,
-    type: "言語",
-    set: ["Java", "C#", "PHP", "JavaScript", "HTML", "CSS", "Python"],
-  },
-  {
-    id: 2,
-    type: "フレームワーク、ライブラリ",
-    set: [
-      "Struts",
-      "Spring",
-      "CakePHP",
-      "Laravel",
-      "Smarty",
-      "JQuery",
-      "Vue.js",
-      "Bootstrap",
-    ],
-  },
-  {
-    id: 3,
-    type: "DB",
-    set: ["Oracle", "SQL Server", "MySQL"],
-  },
-  {
-    id: 4,
-    type: "テスト",
-    set: ["JUnit", "NUnit", "PHPUnit"],
-  },
-  {
-    id: 5,
-    type: "ソース管理",
-    set: ["Git", "Svn", "TFS"],
-  },
-  {
-    id: 6,
-    type: "AWS",
-    set: [
-      "EC2",
-      "IAM",
-      "VPC",
-      "RDB",
-      "Lambda",
-      "FSx for Windows",
-      "Codecommit",
-      "DMS",
-      "Cloud watch",
-      "Cloud Trail",
-    ],
-  },
-  {
-    id: 7,
-    type: "管理ツール",
-    set: ["Jira", "Trello", "Confluence"],
-  },
-];
-
 export default {
   beforeRouteEnter(to, from, next) {
     next((vm) => {
@@ -119,7 +64,7 @@ export default {
           src:
             "https://scontent.fngo4-1.fna.fbcdn.net/v/t1.0-9/76609813_121552215926001_5034201832738521088_n.jpg?_nc_cat=101&ccb=2&_nc_sid=09cbfe&_nc_ohc=Gwll3HmJanUAX_oWtY6&_nc_ht=scontent.fngo4-1.fna&oh=e144c5d385542bf6911872eb6d2c6565&oe=6039C948",
         },
-        skillSet: skill,
+        skillSet: {},
       },
     };
   },

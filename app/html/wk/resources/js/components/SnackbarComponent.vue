@@ -6,11 +6,6 @@
   >
     {{ innerMessage }}
     <slot name="link" />
-    <slot v-slot:action="{ attrs }">
-      <v-btn color="blue" text v-bind="attrs" @click="innerSnackbar = false">
-        Close
-      </v-btn>
-    </slot>
   </v-snackbar>
 </template>
 
@@ -18,14 +13,16 @@
 export default {
   props: {
     snackbar: { type: Boolean },
-    message: { type: String },
+    message: { type: String, default: "" },
     multiLine: { type: Boolean, default: false },
   },
-  data: () => ({
-    innerSnackbar: false,
-    innerMessage: null,
-    timeout: 5000,
-  }),
+  data: function () {
+    return {
+      innerSnackbar: false,
+      innerMessage: null,
+      timeout: 5000,
+    };
+  },
   watch: {
     snackbar: {
       immediate: true,
