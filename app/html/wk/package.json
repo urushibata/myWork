@@ -11,6 +11,8 @@
     },
     "devDependencies": {
         "axios": "^0.21",
+        "browser-sync": "^2.26.14",
+        "browser-sync-webpack-plugin": "^2.2.2",
         "laravel-mix": "^6.0.6",
         "lodash": "^4.17.19",
         "popper.js": "^1.12",
@@ -24,8 +26,10 @@
     },
     "dependencies": {
         "@mdi/font": "^5.9.55",
+        "vue-2-breadcrumbs": "^0.7.12",
         "vue-router": "^3.5.1",
-        "vuetify": "^2.4.3"
+        "vuetify": "^2.4.3",
+        "vuex": "^3.6.2"
     },
     "name": "wk"
 }

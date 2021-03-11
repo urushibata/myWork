@@ -2,42 +2,22 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Foundation\Auth\Access\Authorizable;
 
-class User extends Authenticatable
+class User implements AuthenticatableContract
 {
-    use HasFactory, Notifiable;
+    use Authenticatable, Authorizable;
 
     /**
-     * The attributes that are mass assignable.
+     * Get the name of the unique identifier for the user.
      *
-     * @var array
+     * @see \Illuminate\Contracts\Auth\Authenticatable:: getAuthIdentifierName
+     * @return string
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
-
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    public function getAuthIdentifierName()
+    {
+        return 'name';
+    }
 }

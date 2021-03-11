@@ -5,10 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Models\RekognitionResource;
-use Aws\DynamoDb\Exception\DynamoDbException;
-use Aws\Sdk;
-use Aws\DynamoDb\Marshaler;
-
+use \DynamodbService;
 use Exception;
 
 class RekognitionResourceController extends Controller
@@ -54,33 +51,12 @@ class RekognitionResourceController extends Controller
     {
         Log::debug("show:" . $rekognition_resource);
 
-        $sdk = new Sdk([
-            'endpoint'   => env('DYNAMODB_ENDPOINT'),
-            'region'   => env('AWS_DEFAULT_REGION'),
-            'version'  => 'latest'
-        ]);
-        $dynamodb = $sdk->createDynamoDb();
-        $marshaler = new Marshaler();
-        $key = $marshaler->marshalJson('{"image_name": "' . $rekognition_resource->resource_path . '"}');
-        $params = [
-            'TableName' => 'image-detected',
-            'Key' => $key,
-        ];
+        $result = DynamodbService::getItem('image-detected', $rekognition_resource->resource_path);
 
-        try {
-            $result = $dynamodb->getItem($params);
-
-            if ($result->hasKey('Item')) {
-                return $result->get('Item')['detected_result']['S'];
-            } else {
-                return response()->json([
-                    'errors' => "key not exsits."
-                ], 422);
-            }
-        } catch (DynamoDbException $e) {
-            Log::error($e->getMessage());
-        } catch (Exception $e) {
-            Log::error($e->getMessage());
+        if (array_key_exists('errors', $result)) {
+            return response()->json($result, 422);
+        } else {
+            return $result;
         }
     }
 

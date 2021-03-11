@@ -1,0 +1,81 @@
+version: "3"
+
+services:
+  php:
+    container_name: myWork-php
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    image: my_work_php
+    env_file:
+      - ./docker/php/php.env
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: myWork-db
+      DB_PORT: 3306
+      DB_DATABASE: wk
+      DB_USERNAME: docker
+      DB_PASSWORD: docker
+      LOG_CHANNEL: daily
+      LOG_LEVEL: debug
+    volumes:
+      - ../app:/var/www
+      - ./docker/php/php.ini:/usr/local/etc/php/php.ini
+    depends_on:
+      - db
+
+  nginx:
+    image: nginx
+    container_name: myWork-nginx
+    environment:
+      NGINX_PORT: 80
+      NGINX_SSL_PORT: 443
+      NGINX_DOCUMENT_ROOT: /var/www/html/wk/public
+      MYWORK_APP_HOST: php
+      MYWORK_APP_PORT: 9000
+    ports:
+      - 8090:80
+    volumes:
+      - ../app:/var/www
+      - ./docker/nginx/default.template.conf:/etc/nginx/templates/default.conf.template
+    depends_on:
+      - php
+
+  db:
+    image: mysql:5.7
+    container_name: myWork-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: wk
+      MYSQL_USER: docker
+      MYSQL_PASSWORD: docker
+      TZ: "Asia/Tokyo"
+    volumes:
+      - ./docker/db/data:/var/lib/mysql
+      - ./docker/db/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./docker/db/sql:/docker-entrypoint-initdb.d
+    ports:
+      - 3316:3306
+
+  https-portal:
+    image: steveltn/https-portal
+    ports:
+      - 8080:80
+      - 8443:443
+    environment:
+      DOMAINS: 'localhost -> http://nginx:80'
+      STAGE: local
+    volumes:
+      - ./docker/https/ssl-certs:/var/lib/https-portal
+
+  localstack:
+    image: localstack/localstack
+    ports:
+      - "4566:4566"
+      - "4571:4571"
+    environment:
+      - SERVICES=s3,lambda,sns,dynamodb,ec2,logs
+      - DATA_DIR=/tmp/localstack/data
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    volumes:
+      - ./docker/localstack:/tmp/localstack

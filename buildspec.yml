@@ -1,19 +1,38 @@
 version: 0.2
 
+env:
+  shell: bash
+  variables:
+    MOUNT_DIR: "/efs"
 phases:
   install:
     runtime-versions:
       php: 7.4
+      nodejs: 12
+    commands:
+      # install aws cli v2
+      - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+      - unzip awscliv2.zip
+      - ls -l /root/.pyenv/shims/aws
+      - ./aws/install --bin-dir /root/.pyenv/shims --install-dir /usr/local/aws-cli --update
+      - yes | yum install nfs-utils
+  pre_build:
+    commands:
+      - chmod -R +x $CODEBUILD_SRC_DIR/codebuild
+      #- mkdir -p $MOUNT_DIR
+      #- mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport $EFS_ID.efs.$AWS_DEFAULT_REGION.amazonaws.com:/ $MOUNT_DIR
   build:
     commands:
-      - cd app/html/wk
+      - echo aws cli version
+      - aws --version
+      - echo Build started on `date`
+      - cd ./app/html/wk
+      - echo installing composer..
       - composer install
-      #- ./vendor/bin/phpunit ../tests/
-      #- echo Build started on `date`
-artifacts:
-  files:
-    - app/html/wk/composer.json
-    - app/html/wk/composer.lock
-    - app/html/wk/**/*
-    #- hooks/**/*
-    #- appspec.yml
+      - echo installing npm..
+      - npm install
+  post_build:
+    commands:
+      - $CODEBUILD_SRC_DIR/codebuild/delete_stack.sh
+      #- $CODEBUILD_SRC_DIR/codebuild/update_ecs_volumes.sh
+      - $CODEBUILD_SRC_DIR/codebuild/create_stack.sh

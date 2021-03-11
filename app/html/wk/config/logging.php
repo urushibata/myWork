@@ -52,6 +52,7 @@ return [
             'path' => storage_path('logs/laravel.log'),
             'level' => env('LOG_LEVEL', 'debug'),
             'days' => 7,
+            'tap' => [App\Logging\MyworkFormatter::class],
         ],
 
         'slack' => [

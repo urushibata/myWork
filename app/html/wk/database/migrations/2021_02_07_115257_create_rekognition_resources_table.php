@@ -18,7 +18,7 @@ class CreateRekognitionResourcesTable extends Migration
             $table->string('resource_original_name', 1024)->comment('ファイルのオリジナル名');
             $table->string('resource_path', 1024)->comment('ファイルの保存先パス');
             $table->string('rekognition_type', 20)->comment('画像解析タイプ');
-            $table->unsignedBigInteger('user_id')->nullable()->comment('所有所');
+            $table->string('user_name', 19)->nullable()->comment('所有所');
             $table->timestamps();
         });
     }

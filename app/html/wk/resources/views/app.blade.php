@@ -8,11 +8,6 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Fonts -->
-    <!--
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
-    -->
-
     <!-- Styles -->
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
 
@@ -24,7 +19,7 @@
 <body class="font-sans antialiased">
     {{-- @inertia --}}
     <div id="app">
-        <my-frame-component />
+        <my-frame-component user-name="{{ $user_name }}" />
     </div>
 </body>
 

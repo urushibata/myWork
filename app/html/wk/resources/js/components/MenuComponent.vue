@@ -1,25 +1,56 @@
 
 <template>
   <div>
-    <my-profile-component :profile="profile" />
-
-    <v-row>
+    <v-row class="fill-height">
       <template v-for="lg in linkGroups">
         <v-col :key="lg.group" class="mt-2" cols="12">
           <strong>{{ lg.group }}</strong>
         </v-col>
 
-        <v-col v-for="ll in lg.links" :key="ll.label" cols="6" md="2">
-          <v-card class="d-flex align-center" light height="100" :to="ll.url">
-            <v-img
-              src="https://3.bp.blogspot.com/-4ZXrEpcG74A/WlGpFb87TQI/AAAAAAABJkU/22NohgkRDOIQeh_V4QeDE0yVtBvUheRLACLcBGAs/s800/ai_image_gazou_ninshiki.png"
-            />
-            <v-card-title>{{ ll.label }}</v-card-title>
+        <v-col v-for="(ll, i) in lg.links" :key="ll.label" cols="6" md="2">
+          <v-hover v-slot="{ hover }">
+            <v-card
+              light
+              class="mx-n1"
+              max-width="200px"
+              max-height="300px"
+              :elevation="hover ? 10 : 2"
+              :class="{ 'on-hover': hover }"
+            >
+              <v-img
+                class="ml-auto"
+                max-width="200px"
+                max-height="300px"
+                :src="`https://picsum.photos/200/300/?random=${i}&blur=2`"
+              >
+                <template v-slot:placeholder>
+                  <v-row
+                    class="fill-height ma-0"
+                    align="center"
+                    justify="center"
+                  >
+                    <v-progress-circular
+                      indeterminate
+                      color="amber"
+                    ></v-progress-circular>
+                  </v-row>
+                </template>
 
-            <v-scroll-y-transition>
-              <div class="display-3 flex-grow-1 text-center"></div>
-            </v-scroll-y-transition>
-          </v-card>
+                <v-fade-transition>
+                  <v-overlay v-if="hover" absolute color="#036358">
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn v-bind="attrs" v-on="on" :to="ll.url">{{
+                          ll.label
+                        }}</v-btn>
+                      </template>
+                      {{ ll.description }}
+                    </v-tooltip>
+                  </v-overlay>
+                </v-fade-transition>
+              </v-img>
+            </v-card>
+          </v-hover>
         </v-col>
       </template>
     </v-row>
@@ -28,52 +59,32 @@
 
 <script>
 export default {
-  beforeRouteEnter(to, from, next) {
-    next((vm) => {
-      vm.initialize();
-      next();
-    });
-  },
-  data: () => {
+  data: function () {
     return {
       linkGroups: [
         {
           group: "アプリケーション",
-          links: [{ url: "/imageRekognition/detect", label: "画像解析" }],
-        },
-      ],
-      profile: {
-        name: "漆畑　真也",
-        selfIntroduction: "",
-        privateActivities: {
-          title: "Coder Dojo",
-          Comment: "",
           links: [
             {
-              name: "Coder Dojo 三島沼津",
-              url: "https://coderdojo-mn.com/",
+              url: "/imageRekognition/detect",
+              label: "画像解析",
+              description: "AWS Rekognition APIを利用して画像の解析を行います。",
             },
             {
-              name: "Coder Dojo 静岡",
-              url: "https://coderdojo-shizuoka.org/",
+              url: "/pdfSort/",
+              label: "PDF並び変え",
+              description: "AWS Rekognition APIを利用してPDFの帳票をファイル内でソートします。",
             },
           ],
         },
-        avatar: {
-          alt: "urushibata avatar",
-          src:
-            "https://scontent.fngo4-1.fna.fbcdn.net/v/t1.0-9/76609813_121552215926001_5034201832738521088_n.jpg?_nc_cat=101&ccb=2&_nc_sid=09cbfe&_nc_ohc=Gwll3HmJanUAX_oWtY6&_nc_ht=scontent.fngo4-1.fna&oh=e144c5d385542bf6911872eb6d2c6565&oe=6039C948",
-        },
-        skillSet: {},
-      },
+      ],
     };
-  },
-  methods: {
-    initialize() {
-      axios.post("/getProfile", {}).then((response) => {
-        console.log(response);
-      });
-    },
   },
 };
 </script>
+
+<style scoped>
+.v-card:not(.on-hover) {
+  opacity: 0.8;
+}
+</style>

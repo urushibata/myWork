@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\ImageRekognitionController;
 use App\Http\Controllers\MenuController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,10 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/{any}', function() {return view('app');})->where('any', '.*');
-
-Route::post('getProfile', [MenuController::class, 'getProfile']);
-Route::post('imageRekognition/fileupload', [ImageRekognitionController::class, 'upload']);
-Route::post('imageRekognition/postDetectedResult', [ImageRekognitionController::class, 'postDetectedResult']);
-Route::post('imageRekognition/getList', [ImageRekognitionController::class, 'getList']);
-
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/{any}', [MenuController::class, 'init'])->where('any', '.*');
+});

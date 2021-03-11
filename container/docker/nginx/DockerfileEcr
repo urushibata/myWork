@@ -1,0 +1,3 @@
+FROM nginx
+
+COPY ./env/docker/nginx/default.template.conf /etc/nginx/templates/default.conf.template

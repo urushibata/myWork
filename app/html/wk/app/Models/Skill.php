@@ -11,6 +11,6 @@ class Skill extends Model
 
     public function skillGroup()
     {
-        return $this->belongsTo('App\Models\SlkllGroup');
+        return $this->belongsTo(SkillGroup::class);
     }
 }

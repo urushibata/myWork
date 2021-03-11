@@ -8,13 +8,15 @@ require("./bootstrap");
 window.Vue = require("vue");
 
 import Vue from "vue";
-import router from "./router";
-import vuetify from "./vuetify";
+import router from "@/router";
+import vuetify from "@/vuetify";
+import breadcrumb from "@/breadcrumb";
+import store from "@/store";
 
-import MyFrameComponent from "./components/MyFrameComponent";
-import FooterComponent from "./components/FooterComponent";
-import SnackbarComponent from "./components/SnackbarComponent";
-import MyProfileComponent from "./components/MyProfileComponent";
+import MyFrameLayout from "@/Layouts/MyFrameLayout";
+import MyProfileComponent from "@/components/MyProfileComponent";
+import FooterLayout from "@/Layouts/FooterLayout";
+import SnackbarComponent from "@/components/SnackbarComponent";
 
 /**
  * The following block of code may be used to automatically register your
@@ -27,8 +29,8 @@ import MyProfileComponent from "./components/MyProfileComponent";
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('my-frame-component', MyFrameComponent);
-Vue.component('footer-component', FooterComponent);
+Vue.component('my-frame-component', MyFrameLayout);
+Vue.component('footer-component', FooterLayout);
 Vue.component('snackbar-component', SnackbarComponent);
 Vue.component('my-profile-component', MyProfileComponent);
 
@@ -42,4 +44,6 @@ const app = new Vue({
     el: '#app',
     router: router,
     vuetify: vuetify,
+    breadcrumb: breadcrumb,
+    store: store,
 });

@@ -10,8 +10,8 @@
             :items="results"
             item-key="path"
             class="elevation-1"
-            @click:row="clickRow"
-            :loading="nowLoading"
+            @click:row="detailDisplay"
+            :loading="listLoading"
             loading-text="Loading... Please wait"
             no-data-text="No data"
           >
@@ -36,6 +36,13 @@
         size="64"
       ></v-progress-circular>
     </v-overlay>
+
+    <snackbar-component
+      :snackbar="snackbar"
+      :message="snackbarMessage"
+      :color="snackbarColor"
+      @snackbarChanged="snackbarChanged"
+    />
   </v-card>
 </template>
 
@@ -56,7 +63,7 @@ export default {
   },
   data: function () {
     return {
-      nowLoading: true,
+      listLoading: true,
       results: [],
       headers: [
         {
@@ -71,37 +78,56 @@ export default {
       detectResult: null,
       errorMessage: null,
       imageLoading: false,
+      snackbar: false,
+      snackbarMessage: "",
+      snackbarColor: "",
     };
   },
   methods: {
     initialize() {
-      axios.post("/imageRekognition/getList", {}).then((response) => {
-        this.results = response.data;
-        this.nowLoading = false;
-      });
+      axios
+        .post("/api/imageRekognition/getList", {}, { withCredentials: true })
+        .then((response) => {
+          this.results = response.data;
+          this.listLoading = false;
+        });
     },
-    clickRow(row) {
+    detailDisplay(row) {
       this.imageLoading = true;
       this.imageSrc = null;
       axios
-        .get("/api/rekognition_resource/" + row.id)
+        .get(`/api/rekognition_resource/${row.id}`, { withCredentials: true })
         .then((response) => {
           this.imageSrc = row.path;
           this.detectResult = response.data;
-          this.imageLoading = false;
         })
         .catch((error) => {
+          let res = error.response;
+          console.error(
+            `解析の詳細の表示でエラーが発生しました。: ${row.path}`
+          );
+
           this.imageSrc = null;
           this.detectResult = null;
-          if (error.request.status == 422) {
-            console.log("画像の取得に失敗しました。:" + row.path);
+          if (res.status == 422) {
+            this.snackbarMessage = res.data.errors;
+          } else {
+            this.snackbarMessage = "システムエラーが発生しました。";
           }
+
+          this.snackbar = true;
+          this.snackbarColor = "error";
+        })
+        .finally(() => {
+          this.imageLoading = false;
         });
     },
     removeImage(row) {
-      this.nowLoading = true;
+      this.listLoading = true;
       axios
-        .delete("/api/rekognition_resource/" + row.id)
+        .delete(`/api/rekognition_resource/${row.id}`, {
+          withCredentials: true,
+        })
         .then((response) => {
           this.results = this.results.filter(
             (obj) => obj.id !== response.data.id
@@ -112,8 +138,11 @@ export default {
           this.errorMessage = error.response.data.message;
         })
         .finally(() => {
-          this.nowLoading = false;
+          this.listLoading = false;
         });
+    },
+    snackbarChanged(display) {
+      this.snackbar = display;
     },
   },
 };

@@ -3,6 +3,8 @@
     v-model="innerSnackbar"
     :timeout="timeout"
     :multi-line="multiLine"
+    :color="color"
+    elevation="12"
   >
     {{ innerMessage }}
     <slot name="link" />
@@ -15,12 +17,13 @@ export default {
     snackbar: { type: Boolean },
     message: { type: String, default: "" },
     multiLine: { type: Boolean, default: false },
+    timeout: { type: Number, default: 5000 },
+    color: { type: String, default: "success" },
   },
   data: function () {
     return {
       innerSnackbar: false,
       innerMessage: null,
-      timeout: 5000,
     };
   },
   watch: {
@@ -35,6 +38,9 @@ export default {
       handler(value) {
         this.innerMessage = value;
       },
+    },
+    innerSnackbar: function (after, before) {
+      this.$emit("snackbarChanged", after);
     },
   },
 };

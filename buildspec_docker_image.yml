@@ -1,0 +1,28 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      docker: 19
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+      - sed -i -e 's/listen .* ssl;//g' ./container/docker/nginx/default.template.conf
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - docker build -f ./container/docker/db/DockerfileEcr  -t $DB_IMAGE_REPO_NAME .
+      - docker build -f ./container/docker/php/DockerfileEcr  -t $PHP_IMAGE_REPO_NAME .
+      - docker build -f ./container/docker/nginx/DockerfileEcr  -t $WS_IMAGE_REPO_NAME .
+      - docker tag $DB_IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.ap-northeast-1.amazonaws.com/$DB_IMAGE_REPO_NAME:$IMAGE_TAG;
+      - docker tag $PHP_IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.ap-northeast-1.amazonaws.com/$PHP_IMAGE_REPO_NAME:$IMAGE_TAG;
+      - docker tag $WS_IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.ap-northeast-1.amazonaws.com/$WS_IMAGE_REPO_NAME:$IMAGE_TAG;
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker image...
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.ap-northeast-1.amazonaws.com/$DB_IMAGE_REPO_NAME:$IMAGE_TAG;
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.ap-northeast-1.amazonaws.com/$PHP_IMAGE_REPO_NAME:$IMAGE_TAG;
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.ap-northeast-1.amazonaws.com/$WS_IMAGE_REPO_NAME:$IMAGE_TAG;

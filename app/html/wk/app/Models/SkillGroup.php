@@ -11,6 +11,6 @@ class SkillGroup extends Model
 
     public function skill()
     {
-        return $this->belongsToMany('App\Models\Skill');
+        return $this->hasMany(Skill::class);
     }
 }

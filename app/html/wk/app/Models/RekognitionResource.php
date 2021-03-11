@@ -12,7 +12,8 @@ class RekognitionResource extends Model
     protected $fillable = [
         'resource_original_name',
         'resource_path',
-        'user_id'
+        'rekognition_type',
+        'user_name'
     ];
 
     protected $dates = ['created_at', 'updated_at'];

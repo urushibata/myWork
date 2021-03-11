@@ -145,7 +145,9 @@ export default {
 
       this.overlay = true;
       axios
-        .post("/imageRekognition/fileupload", formData)
+        .post("/api/imageRekognition/fileupload", formData, {
+          withCredentials: true,
+        })
         .then((response) => {
           response.data.forEach((res) => {
             this.snackbar = true;

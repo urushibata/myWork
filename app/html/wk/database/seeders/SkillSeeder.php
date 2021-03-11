@@ -62,12 +62,12 @@ class SkillSeeder extends Seeder
             ],
             [
                 'skill_group_id' => $fw,
-                'name' => 'Struts1.x',
+                'name' => 'Struts',
                 'sort_key' => 10,
             ],
             [
                 'skill_group_id' => $fw,
-                'name' => 'Sprint',
+                'name' => 'Spring',
                 'sort_key' => 20,
             ],
             [
@@ -142,7 +142,7 @@ class SkillSeeder extends Seeder
             ],
             [
                 'skill_group_id' => $aws,
-                'name' => 'RDB',
+                'name' => 'RDS',
                 'sort_key' => 40,
             ],
             [
@@ -180,21 +180,43 @@ class SkillSeeder extends Seeder
                 'name' => 'Directory Service',
                 'sort_key' => 110,
             ],
+
+            [
+                'skill_group_id' => $aws,
+                'name' => 'Direct Connect',
+                'sort_key' => 120,
+            ],
             [
                 'skill_group_id' => $mg,
-                'name' => 'Jira',
+                'name' => 'Git',
                 'sort_key' => 10,
             ],
             [
                 'skill_group_id' => $mg,
-                'name' => 'Trello',
+                'name' => 'SVN',
                 'sort_key' => 20,
             ],
             [
                 'skill_group_id' => $mg,
-                'name' => 'Confluence',
+                'name' => 'TFS',
                 'sort_key' => 30,
             ],
+            [
+                'skill_group_id' => $mg,
+                'name' => 'Jira',
+                'sort_key' => 40,
+            ],
+            [
+                'skill_group_id' => $mg,
+                'name' => 'Trello',
+                'sort_key' => 50,
+            ],
+            [
+                'skill_group_id' => $mg,
+                'name' => 'Confluence',
+                'sort_key' => 60,
+            ],
+
         ]);
     }
 }

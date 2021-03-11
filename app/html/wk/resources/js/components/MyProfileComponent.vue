@@ -1,6 +1,9 @@
 <template>
-  <v-card>
+  <v-card flat>
     <v-card-title>プロフィール</v-card-title>
+
+    <v-divider></v-divider>
+
     <v-card-text>
       <v-list-item>
         <v-list-item-avatar>
@@ -8,50 +11,72 @@
         </v-list-item-avatar>
         <v-list-item-content>
           <v-list-item-title>{{ profile.name }}</v-list-item-title>
-          <v-list-item-subtitle>{{
-            profile.selfIntroduction
-          }}</v-list-item-subtitle>
+
+          <v-divider></v-divider>
+
+          <p v-for="(s, i) in profile.selfIntroduction" :key="i">{{ s }}</p>
         </v-list-item-content>
       </v-list-item>
     </v-card-text>
-
+    <v-spacer></v-spacer>
     <v-card-text>
       <v-list-item>
         <v-list-item-content>
-          <v-list-item-title>スキル</v-list-item-title>
-          <div v-for="s in profile.skillSet" :key="s.id">
-            <v-list-item-subtitle>{{ s.type }}</v-list-item-subtitle>
-            <v-chip-group>
-              <div v-for="ss in s.set" :key="ss">
-                <v-chip class="ma-2">{{ ss }}</v-chip>
-              </div>
+          <v-list-item-title>業務経験</v-list-item-title>
+
+          <v-divider></v-divider>
+
+          <div v-for="sg in profile.skillGroup" :key="sg.id">
+            <v-list-item-subtitle>{{ sg.name }}</v-list-item-subtitle>
+            <v-chip-group column>
+              <v-chip v-for="s in sg.skill" :key="s.id" label>{{
+                s.name
+              }}</v-chip>
             </v-chip-group>
           </div>
         </v-list-item-content>
       </v-list-item>
     </v-card-text>
 
-    <v-card-text>
-      <v-list-item>
-        <v-list-item-content>
-          <v-list-item-title>社外活動</v-list-item-title>
-          <v-list-item-subtitle>{{ profile.privateActivities.title}} {{ profile.privateActivities.Comment }}</v-list-item-subtitle>
-          <div v-for="link in profile.privateActivities.links" :key="link.name" >
-              <a :href="link.url" target="_blank" rel="noopener noreferrer">{{link.name}}</a>
-          </div>
-        </v-list-item-content>
-      </v-list-item>
-    </v-card-text>
+    <v-overlay :value="overlay">
+      <v-progress-circular indeterminate size="64"></v-progress-circular>
+    </v-overlay>
   </v-card>
 </template>
 
 <script>
 export default {
-  props: {
-    profile: Object,
+  data: function () {
+    return {
+      profile: {
+        name: null,
+        selfIntroduction: null,
+        avatar: {
+          alt: null,
+          src: null,
+        },
+        skillGroup: {},
+      },
+      overlay: true,
+    };
   },
-  mounted() {
-    console.debug(this.profile);
+  created: function () {
+/*
+    axios
+      .post("/api/getProfile", {}, { withCredentials: true })
+      .then((response) => {
+        const data = response.data;
+        this.profile.name = data.profile.name;
+        this.profile.selfIntroduction = data.profile.self_introduction.split(
+          "\n"
+        );
+        this.profile.avatar.alt = data.profile.avatar_alt;
+        this.profile.avatar.src = data.profile.avatar_src;
+        this.profile.skillGroup = data.skill_group;
+
+        this.overlay = false;
+      });
+*/
   },
 };
 </script>

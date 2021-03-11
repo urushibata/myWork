@@ -37,12 +37,18 @@ return [
 
     'guards' => [
         'web' => [
-            'driver' => 'session',
+            //'driver' => 'session',
+            //'provider' => 'users',
+
+            //'driver' => 'cognito',
+            'driver' => 'mywork',
             'provider' => 'users',
         ],
 
         'api' => [
-            'driver' => 'token',
+            //'driver' => 'token',
+            //'driver' => 'cognito',
+            'driver' => 'mywork',
             'provider' => 'users',
             'hash' => false,
         ],
@@ -66,15 +72,20 @@ return [
     */
 
     'providers' => [
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\User::class,
-        ],
+        //'users' => [
+        //    'driver' => 'eloquent',
+        //    'model' => App\Models\User::class,
+        //],
 
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
         // ],
+
+        'users' => [
+            'driver' => 'cognito_provider',
+            'model' => App\Models\User::class,
+        ],
     ],
 
     /*
