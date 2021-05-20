@@ -65,6 +65,7 @@ services:
     environment:
       DOMAINS: 'localhost -> http://nginx:80'
       STAGE: local
+      CLIENT_MAX_BODY_SIZE: 5M
     volumes:
       - ./docker/https/ssl-certs:/var/lib/https-portal
 

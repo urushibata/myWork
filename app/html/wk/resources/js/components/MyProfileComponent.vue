@@ -61,7 +61,6 @@ export default {
     };
   },
   created: function () {
-/*
     axios
       .post("/api/getProfile", {}, { withCredentials: true })
       .then((response) => {
@@ -76,7 +75,6 @@ export default {
 
         this.overlay = false;
       });
-*/
   },
 };
 </script>

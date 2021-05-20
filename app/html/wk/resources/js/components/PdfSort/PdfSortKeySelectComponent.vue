@@ -24,6 +24,7 @@
     </v-col>
   </v-row>
 </template>
+
 <script>
 import RekognitionResult from "@/lib/RekognitionResult.js";
 import ImageRekognitionParserComponent from "@/components/ImageRekognition/ImageRekognitionParserComponent";
@@ -119,6 +120,11 @@ export default {
     },
     selectedIndex: function (i) {
       this.$emit("change-sort-key", i);
+    },
+    imageDisplay: function (isDisplay) {
+      if (isDisplay) {
+        this.$emit("close-overlay");
+      }
     },
   },
 };

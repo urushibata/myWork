@@ -39,6 +39,7 @@
             <pdf-sort-key-select-component
               :id="rekognitionResourcesId"
               @change-sort-key="changeSortKey"
+              @close-overlay="closeOverlay"
             ></pdf-sort-key-select-component>
           </v-card>
 
@@ -50,10 +51,12 @@
         <v-stepper-content step="3">
           <v-card flat class="mb-12">
             <a
+              v-if="sortedPdfPath"
               :href="sortedPdfPath"
               target="_blank"
               rel="noopener noreferrer"
-            >ファイルがソートされました。</a>
+              >ファイルがソートされました。</a
+            >
           </v-card>
 
           <v-btn text @click="step = 2"> Prev </v-btn>
@@ -76,12 +79,10 @@
 
 <script>
 import PdfSortKeySelectComponent from "./PdfSortKeySelectComponent.vue";
-import PdfSortUploadComponent from "./PdfSortUploadComponent.vue";
 
 export default {
   components: {
     "pdf-sort-key-select-component": PdfSortKeySelectComponent,
-    "pdf-sort-upload-component": PdfSortUploadComponent,
   },
   data: function () {
     return {
@@ -99,7 +100,7 @@ export default {
       snackbarlink: "",
       overlay: false,
       rekognitionResourcesId: null,
-      selectedSortKey: null,
+      selectedSortKey: 0,
       sortedPdfPath: null,
     };
   },
@@ -112,8 +113,9 @@ export default {
       axios
         .post("/api/pdfsort/fileupload", formData, { withCredentials: true })
         .then((response) => {
-          this.snackbar = true;
-          this.snackbarMessage = `アップロードに成功しました。: ${response.data.resource_original_name}`;
+          this.openSnackbar(
+            `アップロードに成功しました。: ${response.data.resource_original_name}`
+          );
           this.rekognitionResourcesId = response.data.id;
 
           console.log(response);
@@ -132,13 +134,9 @@ export default {
           } else {
             console.log(res);
 
-            this.snackbar = true;
-            this.snackbarColor = "error";
-            this.snackbarMessage = "システムエラーが発生しました。";
+            this.openErrorSnackbar("システムエラーが発生しました。");
+            this.closeOverlay();
           }
-        })
-        .finally(() => {
-          this.overlay = false;
         });
     },
     sortPdf: function () {
@@ -150,24 +148,59 @@ export default {
       axios
         .post("/api/pdfsort/sort", formData, { withCredentials: true })
         .then((response) => {
-          this.snackbar = true;
-          this.snackbarMessage = `ソート中です`;
+          this.openSnackbar("ソートを開始しました。");
 
           console.log(response);
           this.step = 3;
+
+          this.intervalId = setInterval(() => {
+            console.log("getSortResult call");
+            axios
+              .post("/api/pdfsort/getSortResult", formData, {
+                withCredentials: true,
+              })
+              .then((response) => {
+                if (response.data.pdf_url) {
+                  this.sortedPdfPath = response.data.pdf_url;
+                  clearInterval(this.intervalId);
+                  this.closeOverlay();
+                }
+              })
+              .catch((error) => {});
+          }, 15000);
         })
         .catch((error) => {
           let res = error.response;
           console.error(res);
 
-          this.snackbar = true;
-          this.snackbarColor = "error";
-          this.snackbarMessage = "システムエラーが発生しました。";
-          this.overlay = false;
+          this.openErrorSnackbar("システムエラーが発生しました。");
+          this.closeOverlay();
         });
     },
     changeSortKey: function (id) {
       this.selectedSortKey = id;
+    },
+    openErrorSnackbar: function (message) {
+      this.snackbarColor = "error";
+      this.openSnackbar(message);
+    },
+    openSnackbar: function (message) {
+      this.snackbar = true;
+      this.snackbarMessage = message;
+    },
+    closeOverlay: function () {
+      this.overlay = false;
+    },
+  },
+  watch: {
+    step: function (newStep, oldStep) {
+      if (newStep < oldStep) {
+        if (newStep === 2) {
+          this.pdf_url = null;
+        } else if (newStep === 1) {
+          this.rekognitionResourcesId = null;
+        }
+      }
     },
   },
 };

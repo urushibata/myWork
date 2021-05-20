@@ -2897,22 +2897,19 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
-    /*
-        axios
-          .post("/api/getProfile", {}, { withCredentials: true })
-          .then((response) => {
-            const data = response.data;
-            this.profile.name = data.profile.name;
-            this.profile.selfIntroduction = data.profile.self_introduction.split(
-              "\n"
-            );
-            this.profile.avatar.alt = data.profile.avatar_alt;
-            this.profile.avatar.src = data.profile.avatar_src;
-            this.profile.skillGroup = data.skill_group;
-    
-            this.overlay = false;
-          });
-    */
+    var _this = this;
+
+    axios.post("/api/getProfile", {}, {
+      withCredentials: true
+    }).then(function (response) {
+      var data = response.data;
+      _this.profile.name = data.profile.name;
+      _this.profile.selfIntroduction = data.profile.self_introduction.split("\n");
+      _this.profile.avatar.alt = data.profile.avatar_alt;
+      _this.profile.avatar.src = data.profile.avatar_src;
+      _this.profile.skillGroup = data.skill_group;
+      _this.overlay = false;
+    });
   }
 });
 
@@ -2930,6 +2927,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _PdfSortKeySelectComponent_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PdfSortKeySelectComponent.vue */ "./resources/js/components/PdfSort/PdfSortKeySelectComponent.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -3021,7 +3027,8 @@ __webpack_require__.r(__webpack_exports__);
       snackbarlink: "",
       overlay: false,
       rekognitionResourcesId: null,
-      selectedSortKey: null
+      selectedSortKey: 0,
+      sortedPdfPath: null
     };
   },
   methods: {
@@ -3034,8 +3041,8 @@ __webpack_require__.r(__webpack_exports__);
       axios.post("/api/pdfsort/fileupload", formData, {
         withCredentials: true
       }).then(function (response) {
-        _this.snackbar = true;
-        _this.snackbarMessage = "\u30A2\u30C3\u30D7\u30ED\u30FC\u30C9\u306B\u6210\u529F\u3057\u307E\u3057\u305F\u3002: ".concat(response.data.resource_original_name);
+        _this.openSnackbar("\u30A2\u30C3\u30D7\u30ED\u30FC\u30C9\u306B\u6210\u529F\u3057\u307E\u3057\u305F\u3002: ".concat(response.data.resource_original_name));
+
         _this.rekognitionResourcesId = response.data.id;
         console.log(response);
         _this.fileInfo = null;
@@ -3051,12 +3058,11 @@ __webpack_require__.r(__webpack_exports__);
           });
         } else {
           console.log(res);
-          _this.snackbar = true;
-          _this.snackbarColor = "error";
-          _this.snackbarMessage = "システムエラーが発生しました。";
+
+          _this.openErrorSnackbar("システムエラーが発生しました。");
+
+          _this.closeOverlay();
         }
-      })["finally"](function () {
-        _this.overlay = false;
       });
     },
     sortPdf: function sortPdf() {
@@ -3069,22 +3075,56 @@ __webpack_require__.r(__webpack_exports__);
       axios.post("/api/pdfsort/sort", formData, {
         withCredentials: true
       }).then(function (response) {
-        _this2.snackbar = true;
-        _this2.snackbarMessage = "\u30BD\u30FC\u30C8\u4E2D\u3067\u3059";
+        _this2.openSnackbar("ソートを開始しました。");
+
         console.log(response);
         _this2.step = 3;
+        _this2.intervalId = setInterval(function () {
+          console.log("getSortResult call");
+          axios.post("/api/pdfsort/getSortResult", formData, {
+            withCredentials: true
+          }).then(function (response) {
+            if (response.data.pdf_url) {
+              _this2.sortedPdfPath = response.data.pdf_url;
+              clearInterval(_this2.intervalId);
+
+              _this2.closeOverlay();
+            }
+          })["catch"](function (error) {});
+        }, 15000);
       })["catch"](function (error) {
         var res = error.response;
         console.error(res);
-        _this2.snackbar = true;
-        _this2.snackbarColor = "error";
-        _this2.snackbarMessage = "システムエラーが発生しました。";
-      })["finally"](function () {
-        _this2.overlay = false;
+
+        _this2.openErrorSnackbar("システムエラーが発生しました。");
+
+        _this2.closeOverlay();
       });
     },
     changeSortKey: function changeSortKey(id) {
       this.selectedSortKey = id;
+    },
+    openErrorSnackbar: function openErrorSnackbar(message) {
+      this.snackbarColor = "error";
+      this.openSnackbar(message);
+    },
+    openSnackbar: function openSnackbar(message) {
+      this.snackbar = true;
+      this.snackbarMessage = message;
+    },
+    closeOverlay: function closeOverlay() {
+      this.overlay = false;
+    }
+  },
+  watch: {
+    step: function step(newStep, oldStep) {
+      if (newStep < oldStep) {
+        if (newStep === 2) {
+          this.pdf_url = null;
+        } else if (newStep === 1) {
+          this.rekognitionResourcesId = null;
+        }
+      }
     }
   }
 });
@@ -3104,6 +3144,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _lib_RekognitionResult_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/lib/RekognitionResult.js */ "./resources/js/lib/RekognitionResult.js");
 /* harmony import */ var _components_ImageRekognition_ImageRekognitionParserComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/components/ImageRekognition/ImageRekognitionParserComponent */ "./resources/js/components/ImageRekognition/ImageRekognitionParserComponent.vue");
+//
 //
 //
 //
@@ -3217,6 +3258,7 @@ __webpack_require__.r(__webpack_exports__);
       console.log("new id :" + newId);
 
       if (newId) {
+        this.imageSrc = null;
         this.intervalId = setInterval(function () {
           _this2.getTopPageImage();
         }, 15000);
@@ -3226,6 +3268,11 @@ __webpack_require__.r(__webpack_exports__);
     },
     selectedIndex: function selectedIndex(i) {
       this.$emit("change-sort-key", i);
+    },
+    imageDisplay: function imageDisplay(isDisplay) {
+      if (isDisplay) {
+        this.$emit("close-overlay");
+      }
     }
   }
 });
@@ -24069,7 +24116,10 @@ var render = function() {
                     [
                       _c("pdf-sort-key-select-component", {
                         attrs: { id: _vm.rekognitionResourcesId },
-                        on: { "change-sort-key": _vm.changeSortKey }
+                        on: {
+                          "change-sort-key": _vm.changeSortKey,
+                          "close-overlay": _vm.closeOverlay
+                        }
                       })
                     ],
                     1
@@ -24101,10 +24151,21 @@ var render = function() {
                 "v-stepper-content",
                 { attrs: { step: "3" } },
                 [
-                  _c("v-card", {
-                    staticClass: "mb-12",
-                    attrs: { flat: "", color: "grey lighten-1" }
-                  }),
+                  _c("v-card", { staticClass: "mb-12", attrs: { flat: "" } }, [
+                    _vm.sortedPdfPath
+                      ? _c(
+                          "a",
+                          {
+                            attrs: {
+                              href: _vm.sortedPdfPath,
+                              target: "_blank",
+                              rel: "noopener noreferrer"
+                            }
+                          },
+                          [_vm._v("ファイルがソートされました。")]
+                        )
+                      : _vm._e()
+                  ]),
                   _vm._v(" "),
                   _c(
                     "v-btn",

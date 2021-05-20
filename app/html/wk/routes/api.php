@@ -29,6 +29,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/pdfsort/pdfSortFinished', [PdfSortController::class, 'pdfSortFinished']);
     Route::post('/pdfSort/getTopPageDetect', [PdfSortController::class, 'getDetect']);
     Route::post('/pdfsort/sort', [PdfSortController::class, 'sort']);
+    Route::post('/pdfsort/getSortResult', [PdfSortController::class, 'getSortResult']);
 
     Route::resource('/rekognition_resource', RekognitionResourceController::class);
 });
