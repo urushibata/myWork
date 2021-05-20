@@ -3172,7 +3172,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+<<<<<<< HEAD
 //
+=======
+>>>>>>> e159bf0... 機能的には完成
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -3230,8 +3233,11 @@ __webpack_require__.r(__webpack_exports__);
 
           _this.closeOverlay();
         }
+<<<<<<< HEAD
 
         _this.closeOverlay();
+=======
+>>>>>>> e159bf0... 機能的には完成
       });
     },
     sortPdf: function sortPdf() {

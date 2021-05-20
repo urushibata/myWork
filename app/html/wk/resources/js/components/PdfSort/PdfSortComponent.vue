@@ -138,7 +138,10 @@ export default {
             this.openErrorSnackbar("システムエラーが発生しました。");
             this.closeOverlay();
           }
+<<<<<<< HEAD
           this.closeOverlay();
+=======
+>>>>>>> e159bf0... 機能的には完成
         });
     },
     sortPdf: function () {
