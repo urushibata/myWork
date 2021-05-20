@@ -19,7 +19,7 @@
 <body class="font-sans antialiased">
     {{-- @inertia --}}
     <div id="app">
-        <my-frame-component user-name="{{ $user_name }}" />
+        <my-frame-component />
     </div>
 </body>
 

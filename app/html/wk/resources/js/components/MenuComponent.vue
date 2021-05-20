@@ -68,12 +68,14 @@ export default {
             {
               url: "/imageRekognition/detect",
               label: "画像解析",
-              description: "AWS Rekognition APIを利用して画像の解析を行います。",
+              description:
+                "AWS Rekognition APIを利用して画像の解析を行います。",
             },
             {
               url: "/pdfSort/",
               label: "PDF並び変え",
-              description: "AWS Rekognition APIを利用してPDFの帳票をファイル内でソートします。",
+              description:
+                "AWS Rekognition APIを利用してPDFの帳票をファイル内でソートします。",
             },
           ],
         },

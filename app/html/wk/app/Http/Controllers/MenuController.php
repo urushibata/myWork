@@ -17,7 +17,7 @@ class MenuController extends Controller
      */
     public function init(Request $request)
     {
-        return view('app', ['user_name' => \Auth::user()->name]);
+        return view('app');
     }
 
     /**

@@ -1862,17 +1862,235 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      icons: [{
-        name: "mdi-twitter",
-        url: "https://twitter.com/s_urushibata"
-      }, {
+      dialog: false,
+      icons: [//{ name: "mdi-twitter", url: "https://twitter.com/s_urushibata" },
+      {
         name: "mdi-github",
         url: "https://github.com/urushibata/myWork"
+      }],
+      images: [{
+        name: "mywork-rekognition-main.png",
+        defaultHeight: "40vh",
+        defaultWidth: "50vw",
+        height: "40vh",
+        width: "50vw"
+      }, {
+        name: "mywork-rekognition-image-rekognition.png",
+        defaultHeight: "40vh",
+        defaultWidth: "50vw",
+        height: "40vh",
+        width: "50vw"
+      }, {
+        name: "mywork-rekognition-pdf-sort.png",
+        defaultHeight: "40vh",
+        defaultWidth: "50vw",
+        height: "40vh",
+        width: "50vw"
       }]
     };
+  },
+  computed: {},
+  methods: {
+    getImageUrl: function getImageUrl(index) {
+      return "".concat(this.$store.getters.imageUrl, "General/").concat(this.images[index].name);
+    },
+    toggleResize: function toggleResize(imageIndex) {
+      var images = this.images[imageIndex];
+
+      if (images.defaultWidth === images.width) {
+        images.width = "100vw";
+        images.height = "100vh";
+      } else {
+        images.width = images.defaultWidth;
+        images.height = images.defaultHeight;
+      }
+    }
   }
 });
 
@@ -1935,18 +2153,13 @@ __webpack_require__.r(__webpack_exports__);
       drawer: false
     };
   },
-  props: {
-    userName: {
-      type: String
-    }
-  },
   computed: {
     LoginUserName: function LoginUserName() {
       return this.$store.state.userName;
     }
   },
   created: function created() {
-    this.$store.commit("setUserName", this.userName);
+    this.$store.dispatch("init");
   }
 });
 
@@ -1964,7 +2177,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _ImageRekognitionTabsComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ImageRekognitionTabsComponent */ "./resources/js/components/ImageRekognition/ImageRekognitionTabsComponent.vue");
-/* harmony import */ var _ImageRekognitionExplanationComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ImageRekognitionExplanationComponent */ "./resources/js/components/ImageRekognition/ImageRekognitionExplanationComponent.vue");
 //
 //
 //
@@ -2050,12 +2262,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
-    "image-rekognition-explanation-component": _ImageRekognitionExplanationComponent__WEBPACK_IMPORTED_MODULE_1__.default,
     "image-rekognition-tabs-component": _ImageRekognitionTabsComponent__WEBPACK_IMPORTED_MODULE_0__.default
   },
   data: function data() {
@@ -2362,49 +2571,6 @@ __webpack_require__.r(__webpack_exports__);
         });
       }
     }
-  }
-});
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/ImageRekognition/ImageRekognitionExplanationComponent.vue?vue&type=script&lang=js&":
-/*!************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/ImageRekognition/ImageRekognitionExplanationComponent.vue?vue&type=script&lang=js& ***!
-  \************************************************************************************************************************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  data: function data() {
-    return {
-      dialog: false
-    };
   }
 });
 
@@ -2897,22 +3063,19 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
-    /*
-        axios
-          .post("/api/getProfile", {}, { withCredentials: true })
-          .then((response) => {
-            const data = response.data;
-            this.profile.name = data.profile.name;
-            this.profile.selfIntroduction = data.profile.self_introduction.split(
-              "\n"
-            );
-            this.profile.avatar.alt = data.profile.avatar_alt;
-            this.profile.avatar.src = data.profile.avatar_src;
-            this.profile.skillGroup = data.skill_group;
-    
-            this.overlay = false;
-          });
-    */
+    var _this = this;
+
+    axios.post("/api/getProfile", {}, {
+      withCredentials: true
+    }).then(function (response) {
+      var data = response.data;
+      _this.profile.name = data.profile.name;
+      _this.profile.selfIntroduction = data.profile.self_introduction.split("\n");
+      _this.profile.avatar.alt = data.profile.avatar_alt;
+      _this.profile.avatar.src = data.profile.avatar_src;
+      _this.profile.skillGroup = data.skill_group;
+      _this.overlay = false;
+    });
   }
 });
 
@@ -2930,6 +3093,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _PdfSortKeySelectComponent_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PdfSortKeySelectComponent.vue */ "./resources/js/components/PdfSort/PdfSortKeySelectComponent.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -3021,7 +3194,8 @@ __webpack_require__.r(__webpack_exports__);
       snackbarlink: "",
       overlay: false,
       rekognitionResourcesId: null,
-      selectedSortKey: null
+      selectedSortKey: 0,
+      sortedPdfPath: null
     };
   },
   methods: {
@@ -3034,8 +3208,8 @@ __webpack_require__.r(__webpack_exports__);
       axios.post("/api/pdfsort/fileupload", formData, {
         withCredentials: true
       }).then(function (response) {
-        _this.snackbar = true;
-        _this.snackbarMessage = "\u30A2\u30C3\u30D7\u30ED\u30FC\u30C9\u306B\u6210\u529F\u3057\u307E\u3057\u305F\u3002: ".concat(response.data.resource_original_name);
+        _this.openSnackbar("\u30A2\u30C3\u30D7\u30ED\u30FC\u30C9\u306B\u6210\u529F\u3057\u307E\u3057\u305F\u3002: ".concat(response.data.resource_original_name));
+
         _this.rekognitionResourcesId = response.data.id;
         console.log(response);
         _this.fileInfo = null;
@@ -3051,12 +3225,13 @@ __webpack_require__.r(__webpack_exports__);
           });
         } else {
           console.log(res);
-          _this.snackbar = true;
-          _this.snackbarColor = "error";
-          _this.snackbarMessage = "システムエラーが発生しました。";
+
+          _this.openErrorSnackbar("システムエラーが発生しました。");
+
+          _this.closeOverlay();
         }
-      })["finally"](function () {
-        _this.overlay = false;
+
+        _this.closeOverlay();
       });
     },
     sortPdf: function sortPdf() {
@@ -3069,22 +3244,56 @@ __webpack_require__.r(__webpack_exports__);
       axios.post("/api/pdfsort/sort", formData, {
         withCredentials: true
       }).then(function (response) {
-        _this2.snackbar = true;
-        _this2.snackbarMessage = "\u30BD\u30FC\u30C8\u4E2D\u3067\u3059";
+        _this2.openSnackbar("ソートを開始しました。");
+
         console.log(response);
         _this2.step = 3;
+        _this2.intervalId = setInterval(function () {
+          console.log("getSortResult call");
+          axios.post("/api/pdfsort/getSortResult", formData, {
+            withCredentials: true
+          }).then(function (response) {
+            if (response.data.pdf_url) {
+              _this2.sortedPdfPath = response.data.pdf_url;
+              clearInterval(_this2.intervalId);
+
+              _this2.closeOverlay();
+            }
+          })["catch"](function (error) {});
+        }, 15000);
       })["catch"](function (error) {
         var res = error.response;
         console.error(res);
-        _this2.snackbar = true;
-        _this2.snackbarColor = "error";
-        _this2.snackbarMessage = "システムエラーが発生しました。";
-      })["finally"](function () {
-        _this2.overlay = false;
+
+        _this2.openErrorSnackbar("システムエラーが発生しました。");
+
+        _this2.closeOverlay();
       });
     },
     changeSortKey: function changeSortKey(id) {
       this.selectedSortKey = id;
+    },
+    openErrorSnackbar: function openErrorSnackbar(message) {
+      this.snackbarColor = "error";
+      this.openSnackbar(message);
+    },
+    openSnackbar: function openSnackbar(message) {
+      this.snackbar = true;
+      this.snackbarMessage = message;
+    },
+    closeOverlay: function closeOverlay() {
+      this.overlay = false;
+    }
+  },
+  watch: {
+    step: function step(newStep, oldStep) {
+      if (newStep < oldStep) {
+        if (newStep === 2) {
+          this.pdf_url = null;
+        } else if (newStep === 1) {
+          this.rekognitionResourcesId = null;
+        }
+      }
     }
   }
 });
@@ -3104,6 +3313,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _lib_RekognitionResult_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/lib/RekognitionResult.js */ "./resources/js/lib/RekognitionResult.js");
 /* harmony import */ var _components_ImageRekognition_ImageRekognitionParserComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/components/ImageRekognition/ImageRekognitionParserComponent */ "./resources/js/components/ImageRekognition/ImageRekognitionParserComponent.vue");
+//
 //
 //
 //
@@ -3217,15 +3427,21 @@ __webpack_require__.r(__webpack_exports__);
       console.log("new id :" + newId);
 
       if (newId) {
+        this.imageSrc = null;
         this.intervalId = setInterval(function () {
           _this2.getTopPageImage();
         }, 15000);
       } else {
-        clearInterval(this.intervalId);
+        this.imageSrc = null;
       }
     },
     selectedIndex: function selectedIndex(i) {
       this.$emit("change-sort-key", i);
+    },
+    imageDisplay: function imageDisplay(isDisplay) {
+      if (isDisplay) {
+        this.$emit("close-overlay");
+      }
     }
   }
 });
@@ -3665,11 +3881,32 @@ __webpack_require__.r(__webpack_exports__);
 vue__WEBPACK_IMPORTED_MODULE_0__.default.use(vuex__WEBPACK_IMPORTED_MODULE_1__.default);
 var store = new vuex__WEBPACK_IMPORTED_MODULE_1__.default.Store({
   state: {
-    userName: ""
+    userName: "",
+    imageUrl: ""
+  },
+  getters: {
+    userName: function userName(state) {
+      return state.userName;
+    },
+    imageUrl: function imageUrl(state) {
+      return state.imageUrl;
+    }
   },
   mutations: {
     setUserName: function setUserName(state, name) {
-      state.userName = name;
+      return state.userName = name;
+    }
+  },
+  actions: {
+    init: function init() {
+      var _this = this;
+
+      axios.post("/api/vuexInit").then(function (response) {
+        _this.state.imageUrl = response.data.img_url;
+        _this.state.userName = response.data.user_name;
+      })["catch"](function (error) {
+        console.error(error);
+      });
     }
   }
 });
@@ -21924,45 +22161,6 @@ component.options.__file = "resources/js/components/ImageRekognition/ImageRekogn
 
 /***/ }),
 
-/***/ "./resources/js/components/ImageRekognition/ImageRekognitionExplanationComponent.vue":
-/*!*******************************************************************************************!*\
-  !*** ./resources/js/components/ImageRekognition/ImageRekognitionExplanationComponent.vue ***!
-  \*******************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _ImageRekognitionExplanationComponent_vue_vue_type_template_id_2ad71578___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ImageRekognitionExplanationComponent.vue?vue&type=template&id=2ad71578& */ "./resources/js/components/ImageRekognition/ImageRekognitionExplanationComponent.vue?vue&type=template&id=2ad71578&");
-/* harmony import */ var _ImageRekognitionExplanationComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ImageRekognitionExplanationComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/ImageRekognition/ImageRekognitionExplanationComponent.vue?vue&type=script&lang=js&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-;
-var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
-  _ImageRekognitionExplanationComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
-  _ImageRekognitionExplanationComponent_vue_vue_type_template_id_2ad71578___WEBPACK_IMPORTED_MODULE_0__.render,
-  _ImageRekognitionExplanationComponent_vue_vue_type_template_id_2ad71578___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/js/components/ImageRekognition/ImageRekognitionExplanationComponent.vue"
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
-
-/***/ }),
-
 /***/ "./resources/js/components/ImageRekognition/ImageRekognitionParserComponent.vue":
 /*!**************************************************************************************!*\
   !*** ./resources/js/components/ImageRekognition/ImageRekognitionParserComponent.vue ***!
@@ -22343,22 +22541,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/ImageRekognition/ImageRekognitionExplanationComponent.vue?vue&type=script&lang=js&":
-/*!********************************************************************************************************************!*\
-  !*** ./resources/js/components/ImageRekognition/ImageRekognitionExplanationComponent.vue?vue&type=script&lang=js& ***!
-  \********************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ImageRekognitionExplanationComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./ImageRekognitionExplanationComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/ImageRekognition/ImageRekognitionExplanationComponent.vue?vue&type=script&lang=js&");
- /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ImageRekognitionExplanationComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
-
-/***/ }),
-
 /***/ "./resources/js/components/ImageRekognition/ImageRekognitionParserComponent.vue?vue&type=script&lang=js&":
 /*!***************************************************************************************************************!*\
   !*** ./resources/js/components/ImageRekognition/ImageRekognitionParserComponent.vue?vue&type=script&lang=js& ***!
@@ -22594,23 +22776,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/ImageRekognition/ImageRekognitionExplanationComponent.vue?vue&type=template&id=2ad71578&":
-/*!**************************************************************************************************************************!*\
-  !*** ./resources/js/components/ImageRekognition/ImageRekognitionExplanationComponent.vue?vue&type=template&id=2ad71578& ***!
-  \**************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ImageRekognitionExplanationComponent_vue_vue_type_template_id_2ad71578___WEBPACK_IMPORTED_MODULE_0__.render),
-/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ImageRekognitionExplanationComponent_vue_vue_type_template_id_2ad71578___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
-/* harmony export */ });
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ImageRekognitionExplanationComponent_vue_vue_type_template_id_2ad71578___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./ImageRekognitionExplanationComponent.vue?vue&type=template&id=2ad71578& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/ImageRekognition/ImageRekognitionExplanationComponent.vue?vue&type=template&id=2ad71578&");
-
-
-/***/ }),
-
 /***/ "./resources/js/components/ImageRekognition/ImageRekognitionParserComponent.vue?vue&type=template&id=2d5f5fba&":
 /*!*********************************************************************************************************************!*\
   !*** ./resources/js/components/ImageRekognition/ImageRekognitionParserComponent.vue?vue&type=template&id=2d5f5fba& ***!
@@ -22765,7 +22930,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-footer",
-    { attrs: { padless: "" } },
+    { attrs: { padless: "", absolute: "" } },
     [
       _c(
         "v-card",
@@ -22777,39 +22942,509 @@ var render = function() {
           _c(
             "v-card-title",
             [
+              _c(
+                "v-dialog",
+                {
+                  attrs: {
+                    fullscreen: "",
+                    "hide-overlay": "",
+                    scrollable: "",
+                    transition: "dialog-bottom-transition"
+                  },
+                  scopedSlots: _vm._u([
+                    {
+                      key: "activator",
+                      fn: function(ref) {
+                        var on = ref.on
+                        var attrs = ref.attrs
+                        return [
+                          _c(
+                            "v-btn",
+                            _vm._g(
+                              _vm._b(
+                                { attrs: { text: "", tile: "" } },
+                                "v-btn",
+                                attrs,
+                                false
+                              ),
+                              on
+                            ),
+                            [
+                              _vm._v(
+                                "\n            このサイトについて\n          "
+                              )
+                            ]
+                          )
+                        ]
+                      }
+                    }
+                  ]),
+                  model: {
+                    value: _vm.dialog,
+                    callback: function($$v) {
+                      _vm.dialog = $$v
+                    },
+                    expression: "dialog"
+                  }
+                },
+                [
+                  _vm._v(" "),
+                  _c(
+                    "v-card",
+                    [
+                      _c(
+                        "v-toolbar",
+                        { attrs: { flat: "", tile: "" } },
+                        [
+                          _c(
+                            "v-btn",
+                            {
+                              attrs: { icon: "" },
+                              on: {
+                                click: function($event) {
+                                  _vm.dialog = false
+                                }
+                              }
+                            },
+                            [_c("v-icon", [_vm._v("mdi-close")])],
+                            1
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-sheet",
+                        { staticClass: "pa-3", attrs: { tile: "" } },
+                        [
+                          _c("v-img", {
+                            staticClass: "pa-3",
+                            attrs: {
+                              src: _vm.getImageUrl(0),
+                              contain: "",
+                              "max-height": _vm.images[0].height,
+                              "max-width": _vm.images[0].width
+                            },
+                            on: {
+                              click: function($event) {
+                                return _vm.toggleResize(0)
+                              }
+                            },
+                            scopedSlots: _vm._u([
+                              {
+                                key: "placeholder",
+                                fn: function() {
+                                  return [
+                                    _c(
+                                      "v-row",
+                                      {
+                                        staticClass: "fill-height ma-0",
+                                        attrs: {
+                                          align: "center",
+                                          justify: "center"
+                                        }
+                                      },
+                                      [
+                                        _c("v-progress-circular", {
+                                          attrs: {
+                                            indeterminate: "",
+                                            color: "amber"
+                                          }
+                                        })
+                                      ],
+                                      1
+                                    )
+                                  ]
+                                },
+                                proxy: true
+                              }
+                            ])
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-sheet",
+                        { staticClass: "fill-height", attrs: { tile: "" } },
+                        [
+                          _c(
+                            "v-list",
+                            [
+                              _c(
+                                "v-list-item",
+                                { attrs: { "three-line": "" } },
+                                [
+                                  _c(
+                                    "v-list-item-content",
+                                    [
+                                      _c("v-list-item-title", [
+                                        _vm._v("FW, ライブラリー")
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("v-list-item-subtitle", [
+                                        _vm._v(
+                                          "laravel8, Vue.js 2.5, Vuetify, Vuex, Vue Router,\n                    pdf2image"
+                                        )
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("v-divider"),
+                                      _vm._v(" "),
+                                      _c("v-list-item-title", [
+                                        _vm._v("プログラミング言語")
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("v-list-item-subtitle", [
+                                        _vm._v("PHP7.4, Javascript, Python3.8")
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("v-divider")
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-list-item",
+                                [
+                                  _c(
+                                    "v-list-item-content",
+                                    [
+                                      _c("v-list-item-title", [
+                                        _vm._v("Web Server")
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("v-list-item-subtitle", [
+                                        _vm._v("Nginx")
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("v-divider"),
+                                      _vm._v(" "),
+                                      _c("v-list-item-title", [_vm._v("DB")]),
+                                      _vm._v(" "),
+                                      _c("v-list-item-subtitle", [
+                                        _vm._v("MySQL")
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("v-divider"),
+                                      _vm._v(" "),
+                                      _c("v-list-item-title", [_vm._v("AWS")]),
+                                      _vm._v(" "),
+                                      _c("v-list-item-subtitle", [
+                                        _vm._v(
+                                          "ECS Fargate, ELB, S3, Cloud Front, DynamoDb, ACM, EFS,\n                    Lambda, SQS, SNS, Rekognition, EventBridge, Route53,\n                    ECR"
+                                        )
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("v-divider")
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-list-item",
+                                [
+                                  _c(
+                                    "v-list-item-content",
+                                    [
+                                      _c(
+                                        "v-card",
+                                        {
+                                          staticClass: "pa-3",
+                                          attrs: { elevation: "0", tile: "" }
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                    このアプリケーションはフロントはVue.jsでバックエンドはLaravel8で構築したSPAです。"
+                                          ),
+                                          _c("br"),
+                                          _vm._v(
+                                            "\n                    画像解析サービスを使用して何かできないかと興味があったので作成しました。画像解析サービスにはAWS\n                    Rekognitionを使っています。\n                  "
+                                          )
+                                        ]
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-list",
+                            [
+                              _c(
+                                "v-list-item",
+                                [
+                                  _c(
+                                    "v-list-item-content",
+                                    [
+                                      _c("v-list-item-title", [
+                                        _vm._v("画像解析")
+                                      ]),
+                                      _vm._v(" "),
+                                      _c(
+                                        "v-sheet",
+                                        {
+                                          staticClass: "pa-3",
+                                          attrs: { tile: "" }
+                                        },
+                                        [
+                                          _c("v-img", {
+                                            staticClass: "pa-3",
+                                            attrs: {
+                                              src: _vm.getImageUrl(1),
+                                              contain: "",
+                                              "max-height":
+                                                _vm.images[1].height,
+                                              "max-width": _vm.images[1].width
+                                            },
+                                            on: {
+                                              click: function($event) {
+                                                return _vm.toggleResize(1)
+                                              }
+                                            },
+                                            scopedSlots: _vm._u([
+                                              {
+                                                key: "placeholder",
+                                                fn: function() {
+                                                  return [
+                                                    _c(
+                                                      "v-row",
+                                                      {
+                                                        staticClass:
+                                                          "fill-height ma-0",
+                                                        attrs: {
+                                                          align: "center",
+                                                          justify: "center"
+                                                        }
+                                                      },
+                                                      [
+                                                        _c(
+                                                          "v-progress-circular",
+                                                          {
+                                                            attrs: {
+                                                              indeterminate: "",
+                                                              color: "amber"
+                                                            }
+                                                          }
+                                                        )
+                                                      ],
+                                                      1
+                                                    )
+                                                  ]
+                                                },
+                                                proxy: true
+                                              }
+                                            ])
+                                          }),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-card",
+                                            {
+                                              staticClass: "pa-3",
+                                              attrs: {
+                                                elevation: "0",
+                                                tile: ""
+                                              }
+                                            },
+                                            [
+                                              _vm._v(
+                                                "\n                      アップロードされたファイルはS3に格納されます。それをトリガーにLambdaが起動し、Rekognitionで画像解析します。"
+                                              ),
+                                              _c("br"),
+                                              _vm._v(
+                                                "\n                      解析結果は、SQSを仲介しDynamoDBに登録されます。"
+                                              ),
+                                              _c("br"),
+                                              _vm._v(
+                                                "\n                      SNS,\n                      SQSは各サービスを疎結合にするために挟んでいます。"
+                                              ),
+                                              _c("br"),
+                                              _vm._v(
+                                                "\n                      クライアントはポーリングし、処理が終わったら画面に表示します。\n                    "
+                                              )
+                                            ]
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-list",
+                            [
+                              _c(
+                                "v-list-item",
+                                [
+                                  _c(
+                                    "v-list-item-content",
+                                    [
+                                      _c("v-list-item-title", [
+                                        _vm._v("PDF並び替え")
+                                      ]),
+                                      _vm._v(" "),
+                                      _c(
+                                        "v-sheet",
+                                        {
+                                          staticClass: "pa-3",
+                                          attrs: { tile: "" }
+                                        },
+                                        [
+                                          _c("v-img", {
+                                            staticClass: "pa-3",
+                                            attrs: {
+                                              src: _vm.getImageUrl(2),
+                                              contain: "",
+                                              "max-height":
+                                                _vm.images[2].height,
+                                              "max-width": _vm.images[2].width
+                                            },
+                                            on: {
+                                              click: function($event) {
+                                                return _vm.toggleResize(2)
+                                              }
+                                            },
+                                            scopedSlots: _vm._u([
+                                              {
+                                                key: "placeholder",
+                                                fn: function() {
+                                                  return [
+                                                    _c(
+                                                      "v-row",
+                                                      {
+                                                        staticClass:
+                                                          "fill-height ma-0",
+                                                        attrs: {
+                                                          align: "center",
+                                                          justify: "center"
+                                                        }
+                                                      },
+                                                      [
+                                                        _c(
+                                                          "v-progress-circular",
+                                                          {
+                                                            attrs: {
+                                                              indeterminate: "",
+                                                              color: "amber"
+                                                            }
+                                                          }
+                                                        )
+                                                      ],
+                                                      1
+                                                    )
+                                                  ]
+                                                },
+                                                proxy: true
+                                              }
+                                            ])
+                                          }),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-card",
+                                            {
+                                              staticClass: "pa-3",
+                                              attrs: {
+                                                elevation: "0",
+                                                tile: ""
+                                              }
+                                            },
+                                            [
+                                              _vm._v(
+                                                "\n                      アップロードされたファイルはS3に格納されます。それをトリガーにLambdaがECS\n                      Fargateを起動します。"
+                                              ),
+                                              _c("br"),
+                                              _vm._v(
+                                                "\n                      FargateではPythonでPDFの１ページ目を画像に変換し、それをS3に格納します。\n                      Fargateを使用しているのはPythonの画像変換ライブラリーのpdf2imageが"
+                                              ),
+                                              _c(
+                                                "a",
+                                                {
+                                                  attrs: {
+                                                    href:
+                                                      "https://poppler.freedesktop.org/",
+                                                    target: "_blank",
+                                                    rel: "noopener noreferrer"
+                                                  }
+                                                },
+                                                [_vm._v("Poppler")]
+                                              ),
+                                              _vm._v(
+                                                "というツールを内部的に利用しておりサーバレス環境(Lambda)では難しいためです。"
+                                              ),
+                                              _c("br"),
+                                              _vm._v(
+                                                "\n                      格納された画像は上記の画像解析処理によって解析されます。\n                      クライアントはポーリングし処理が終わるのを待ちます。\n                      "
+                                              ),
+                                              _c("v-spacer"),
+                                              _vm._v(
+                                                "\n                      解析結果が表示されソートに使用するキーを選択するとSNSを介してECS\n                      Fargateが起動し、PDFをソートします。ソートされたPDFはS3に保存されます。\n                      処理が完了するとEventBridgeで検知し、SNSからHTTP通知をWebサーバーに送信します。"
+                                              ),
+                                              _c("br"),
+                                              _vm._v(
+                                                "\n                      クライアントにはファイルのリンクが表示されます。\n                    "
+                                              )
+                                            ],
+                                            1
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
               _c("v-spacer"),
               _vm._v(" "),
               _vm._l(_vm.icons, function(icon) {
                 return _c(
-                  "div",
-                  { key: icon.name },
+                  "v-btn",
+                  {
+                    key: icon.name,
+                    staticClass: "mx-4",
+                    attrs: {
+                      text: "",
+                      icon: "",
+                      href: icon.url,
+                      target: "_blank",
+                      rel: "noopener noreferrer"
+                    }
+                  },
                   [
-                    _c(
-                      "v-btn",
-                      {
-                        staticClass: "mx-4",
-                        attrs: {
-                          text: "",
-                          icon: "",
-                          href: icon.url,
-                          target: "_blank"
-                        }
-                      },
-                      [
-                        _c(
-                          "v-icon",
-                          { attrs: { size: "24px", to: icon.url } },
-                          [
-                            _vm._v(
-                              "\n            " +
-                                _vm._s(icon.name) +
-                                "\n          "
-                            )
-                          ]
-                        )
-                      ],
-                      1
-                    )
+                    _c("v-icon", { attrs: { size: "24px", to: icon.url } }, [
+                      _vm._v("\n          " + _vm._s(icon.name) + "\n        ")
+                    ])
                   ],
                   1
                 )
@@ -22961,9 +23596,7 @@ var render = function() {
                 _vm._v(
                   "\n        以下より画像を選択して画像解析ボタンをクリックしてください。"
                 )
-              ]),
-              _vm._v(" "),
-              _c("image-rekognition-explanation-component")
+              ])
             ],
             1
           ),
@@ -23267,105 +23900,6 @@ var render = function() {
                 1
               )
             : _vm._e()
-        ],
-        1
-      )
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/ImageRekognition/ImageRekognitionExplanationComponent.vue?vue&type=template&id=2ad71578&":
-/*!*****************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/ImageRekognition/ImageRekognitionExplanationComponent.vue?vue&type=template&id=2ad71578& ***!
-  \*****************************************************************************************************************************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* binding */ render),
-/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
-/* harmony export */ });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "v-dialog",
-    {
-      attrs: { width: "600px" },
-      scopedSlots: _vm._u([
-        {
-          key: "activator",
-          fn: function(ref) {
-            var on = ref.on
-            var attrs = ref.attrs
-            return [
-              _c(
-                "v-btn",
-                _vm._g(
-                  _vm._b(
-                    { attrs: { color: "info", dark: "" } },
-                    "v-btn",
-                    attrs,
-                    false
-                  ),
-                  on
-                ),
-                [_vm._v(" 詳しい説明 ")]
-              )
-            ]
-          }
-        }
-      ]),
-      model: {
-        value: _vm.dialog,
-        callback: function($$v) {
-          _vm.dialog = $$v
-        },
-        expression: "dialog"
-      }
-    },
-    [
-      _vm._v(" "),
-      _c(
-        "v-card",
-        [
-          _c("v-card-title", [
-            _c("span", { staticClass: "headline" }, [_vm._v("処理フロー")])
-          ]),
-          _vm._v(" "),
-          _c("v-card-text"),
-          _vm._v(" "),
-          _c("v-card-text"),
-          _vm._v(" "),
-          _c(
-            "v-card-actions",
-            [
-              _c("v-spacer"),
-              _vm._v(" "),
-              _c(
-                "v-btn",
-                {
-                  attrs: { color: "green darken-1", text: "" },
-                  on: {
-                    click: function($event) {
-                      _vm.dialog = false
-                    }
-                  }
-                },
-                [_vm._v("\n        Close\n      ")]
-              )
-            ],
-            1
-          )
         ],
         1
       )
@@ -24027,6 +24561,8 @@ var render = function() {
                     "v-card",
                     { staticClass: "mb-12", attrs: { flat: "" } },
                     [
+                      _c("v-sheet"),
+                      _vm._v(" "),
                       _c("v-file-input", {
                         attrs: {
                           counter: "",
@@ -24053,7 +24589,7 @@ var render = function() {
                       attrs: { color: "primary" },
                       on: { click: _vm.fileUpload }
                     },
-                    [_vm._v(" Next ")]
+                    [_vm._v(" ソートキー抽出 ")]
                   )
                 ],
                 1
@@ -24069,7 +24605,10 @@ var render = function() {
                     [
                       _c("pdf-sort-key-select-component", {
                         attrs: { id: _vm.rekognitionResourcesId },
-                        on: { "change-sort-key": _vm.changeSortKey }
+                        on: {
+                          "change-sort-key": _vm.changeSortKey,
+                          "close-overlay": _vm.closeOverlay
+                        }
                       })
                     ],
                     1
@@ -24078,7 +24617,7 @@ var render = function() {
                   _c(
                     "v-btn",
                     { attrs: { color: "primary" }, on: { click: _vm.sortPdf } },
-                    [_vm._v(" Next ")]
+                    [_vm._v(" ソート実行 ")]
                   ),
                   _vm._v(" "),
                   _c(
@@ -24091,7 +24630,7 @@ var render = function() {
                         }
                       }
                     },
-                    [_vm._v(" Prev ")]
+                    [_vm._v(" ファイル再選択 ")]
                   )
                 ],
                 1
@@ -24101,10 +24640,21 @@ var render = function() {
                 "v-stepper-content",
                 { attrs: { step: "3" } },
                 [
-                  _c("v-card", {
-                    staticClass: "mb-12",
-                    attrs: { flat: "", color: "grey lighten-1" }
-                  }),
+                  _c("v-card", { staticClass: "mb-12", attrs: { flat: "" } }, [
+                    _vm.sortedPdfPath
+                      ? _c(
+                          "a",
+                          {
+                            attrs: {
+                              href: _vm.sortedPdfPath,
+                              target: "_blank",
+                              rel: "noopener noreferrer"
+                            }
+                          },
+                          [_vm._v("ファイルがソートされました。")]
+                        )
+                      : _vm._e()
+                  ]),
                   _vm._v(" "),
                   _c(
                     "v-btn",
@@ -24116,7 +24666,7 @@ var render = function() {
                         }
                       }
                     },
-                    [_vm._v(" Prev ")]
+                    [_vm._v(" ファイル変更 ")]
                   )
                 ],
                 1

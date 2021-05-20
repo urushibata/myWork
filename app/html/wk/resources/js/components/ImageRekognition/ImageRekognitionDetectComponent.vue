@@ -7,7 +7,6 @@
           >指定の画像をAWS Rekognitionを使用して分析します。<br />
           以下より画像を選択して画像解析ボタンをクリックしてください。</v-card-text
         >
-        <image-rekognition-explanation-component />
       </v-sheet>
       <v-row>
         <v-col class="d-flex" cols="12" sm="6">
@@ -86,11 +85,9 @@
 
 <script>
 import ImageRekognitionTabsComponent from "./ImageRekognitionTabsComponent";
-import ImageRekognitionExplanationComponent from "./ImageRekognitionExplanationComponent";
 
 export default {
   components: {
-    "image-rekognition-explanation-component": ImageRekognitionExplanationComponent,
     "image-rekognition-tabs-component": ImageRekognitionTabsComponent,
   },
   data: function () {

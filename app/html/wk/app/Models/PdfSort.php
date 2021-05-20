@@ -15,6 +15,7 @@ class PdfSort extends Model
      * @var array
      */
     protected $fillable = [
+        'org_pdf_path',
         'rekognition_resource_id',
         'sorted_pdf_path'
     ];

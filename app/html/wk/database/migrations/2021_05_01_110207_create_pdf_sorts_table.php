@@ -16,7 +16,8 @@ class CreatePdfSortsTable extends Migration
         Schema::create('pdf_sorts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('rekognition_resource_id')->nullable()->constrained();
-            $table->string('sorted_pdf_path', 1024)->comment('ソートされたPDFファイルの保存先パス');
+            $table->string('org_pdf_path', 1024)->comment('ソート対象のPDFファイルの保存先パス');
+            $table->string('sorted_pdf_path', 1024)->nullable()->comment('ソートされたPDFファイルの保存先パス');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
         });

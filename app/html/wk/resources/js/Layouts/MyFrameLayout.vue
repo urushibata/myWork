@@ -45,16 +45,13 @@ export default {
       drawer: false,
     };
   },
-  props: {
-    userName: { type: String },
-  },
   computed: {
     LoginUserName() {
       return this.$store.state.userName;
     },
   },
   created: function () {
-    this.$store.commit("setUserName", this.userName);
+      this.$store.dispatch("init");
   },
 };
 </script>

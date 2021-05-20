@@ -9,6 +9,7 @@ use App\Models\PdfSort;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use App\Models\RekognitionResource;
+use RuntimeException;
 
 class PdfSortController extends Controller
 {
@@ -18,7 +19,7 @@ class PdfSortController extends Controller
     public function upload(AjaxRequest $request)
     {
         $request->validate([
-            'uploadFile' => ['file', 'mimetypes:application/pdf', 'max:5000'],
+            'uploadFile' => ['required', 'file', 'mimetypes:application/pdf', 'max:5000'],
         ]);
 
         $file = $request->file('uploadFile');
@@ -49,14 +50,12 @@ class PdfSortController extends Controller
      */
     public function getDetect(AjaxRequest $request)
     {
-        $id = $request->id;
+        $request->validate([
+            'id' => 'required'
+        ]);
 
-        Log::debug('getDetect id:' . $id);
-
-        $rekognition_resource = RekognitionResource::find($id);
+        $rekognition_resource = RekognitionResource::find($request->id);
         $detect_result = DynamodbService::getItem('image-detected', $rekognition_resource->resource_path);
-
-        Log::debug('dynamodb result:' . var_export($detect_result, true));
 
         return response()->json(
             [
@@ -67,11 +66,19 @@ class PdfSortController extends Controller
     }
 
     /**
-     * PDFソート
+     * Amazon SNSにソートキーをpublishしてPDFをソートします。
+     *
+     * @return void
      */
-    public function sort(AjaxRequest $request)
+    public function sort(AjaxRequest $request): void
     {
-        Log::debug('sort id:' . $request->id);
+        $request->validate([
+            'id' => 'required',
+            'sort_id' => 'required'
+        ]);
+
+        Log::debug('id:' . $request->id);
+        Log::debug('sort id:' . $request->sort_id);
 
         $rekognition_resource = RekognitionResource::find($request->id);
         $arn = config('mywork.aws.sns_pdf_sort_topic');
@@ -81,9 +88,16 @@ class PdfSortController extends Controller
             throw new \Exception('PDF');
         }
 
+        $target_pdf = config('mywork.aws.s3_pdf_save_path') . '/' . $matches[1] . '.pdf';
+        $pdf_sort = new PdfSort();
+        $pdf_sort->fill([
+            'rekognition_resource_id' => $request->id,
+            'org_pdf_path' => $target_pdf
+        ])->save();
+
         $message = json_encode([
             'original_name' => $rekognition_resource->resource_original_name,
-            'pdf_key' => config('mywork.aws.s3_pdf_save_path') . '/' . $matches[1] . '.pdf',
+            'pdf_key' => $target_pdf,
             'sort_id' => $request->sort_id
         ]);
         $subject = 'Request PDF Sort Sns';
@@ -91,9 +105,11 @@ class PdfSortController extends Controller
     }
 
     /**
-     * PDFソート通知受信
+     * Amazon SNSから送信されるPDFソート通知受信
+     *
+     * @return void
      */
-    public function pdfSortFinished(AjaxRequest $request)
+    public function pdfSortFinished(): void
     {
         $subscription = AmazonSnsService::subscribe();
 
@@ -109,24 +125,41 @@ class PdfSortController extends Controller
             $pdf = $command[1];
 
             $info = pathinfo($pdf);
-            $org_pdf = $info['dirname'] . '.' . $info['extension'];
+            $sort_pdf = $info['dirname'] . '/' . $info['filename'] . '/' . $info['basename'];
 
             Log::debug('shell: ' . $shell);
-            Log::debug('sort pdf: ' . $pdf);
-            Log::debug('org pdf: ' . $org_pdf);
+            Log::debug('org pdf: ' . $pdf);
+            Log::debug('sorted pdf: ' . $sort_pdf);
 
-            $rekognition_resource = RekognitionResource::where("resource_path", $org_pdf)->first();
+            $pdf_sort = PdfSort::where("org_pdf_path", $pdf)->first();
 
-            $pdf_sort = new PdfSort();
-            $pdf_sort->fill([
-                'rekognition_resource_id' => $rekognition_resource ? $rekognition_resource->id : null,
-                'sorted_pdf_path' => $pdf,
-            ])->save();
+            if ($pdf_sort) {
+                $pdf_sort->fill([
+                    'sorted_pdf_path' => $sort_pdf,
+                ])->save();
+            } else {
+                throw new RuntimeException();
+            }
         }
     }
 
-    public function fetchSortResult()
+    /**
+     * ソート結果を取得します。
+     */
+    public function getSortResult(AjaxRequest $ajaxRequest)
     {
+        Log::debug('get sort result: ' . $ajaxRequest->id);
 
+        $ajaxRequest->validate([
+            'id' => 'required'
+        ]);
+
+        $pdfSort = PdfSort::where('rekognition_resource_id', $ajaxRequest->id)->first();
+
+        if ($pdfSort && $pdfSort->sorted_pdf_path) {
+            return response()->json([
+                'pdf_url' => config('mywork.img_url') . $pdfSort->sorted_pdf_path
+            ]);
+        }
     }
 }

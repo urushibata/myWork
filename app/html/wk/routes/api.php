@@ -5,6 +5,7 @@ use App\Http\Controllers\ImageRekognitionController;
 use App\Http\Controllers\PdfSortController;
 use App\Http\Controllers\RekognitionResourceController;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\VuexController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +20,7 @@ use App\Http\Controllers\MenuController;
 
 
 Route::group(['middleware' => ['auth']], function () {
+    Route::post('/vuexInit', [VuexController::class, 'init']);
     Route::post('/getProfile', [MenuController::class, 'getProfile']);
 
     Route::post('/imageRekognition/getList', [ImageRekognitionController::class, 'getList']);
@@ -29,6 +31,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/pdfsort/pdfSortFinished', [PdfSortController::class, 'pdfSortFinished']);
     Route::post('/pdfSort/getTopPageDetect', [PdfSortController::class, 'getDetect']);
     Route::post('/pdfsort/sort', [PdfSortController::class, 'sort']);
+    Route::post('/pdfsort/getSortResult', [PdfSortController::class, 'getSortResult']);
 
     Route::resource('/rekognition_resource', RekognitionResourceController::class);
 });
