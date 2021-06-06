@@ -188,6 +188,7 @@
           :href="icon.url"
           target="_blank"
           rel="noopener noreferrer"
+          :color="icon.color"
         >
           <v-icon size="24px" :to="icon.url">
             {{ icon.name }}
@@ -206,6 +207,7 @@ export default {
       icons: [
         //{ name: "mdi-twitter", url: "https://twitter.com/s_urushibata" },
         { name: "mdi-github", url: "https://github.com/urushibata/myWork" },
+        { name: "mdi-alpha-q-box", url: "https://qiita.com/urushibata", color: "green"},
       ],
       images: [
         {

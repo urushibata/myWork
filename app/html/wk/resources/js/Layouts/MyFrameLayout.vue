@@ -22,14 +22,14 @@
       <my-profile-component />
     </v-navigation-drawer>
 
-    <v-main>
+    <v-main :class="mainMb">
       <v-container>
         <Breadcrumbs />
         <router-view />
       </v-container>
     </v-main>
 
-    <footer-component />
+    <footer-component ref="footer" />
   </v-app>
 </template>
 
@@ -43,6 +43,7 @@ export default {
   data: function () {
     return {
       drawer: false,
+      mainMb: null,
     };
   },
   computed: {
@@ -50,8 +51,21 @@ export default {
       return this.$store.state.userName;
     },
   },
-  created: function () {
-      this.$store.dispatch("init");
+  methods: {
+    bottomMargin() {
+      let footerMarginSize = Math.ceil(this.$refs.footer.$el.clientHeight / 4)
+      if (footerMarginSize > 16) {
+          footerMarginSize = 16;
+      }
+
+      this.mainMb = `mb-${footerMarginSize}`;
+    },
   },
+  created: function () {
+    this.$store.dispatch("init");
+  },
+  mounted: function () {
+    this.bottomMargin();
+  }
 };
 </script>

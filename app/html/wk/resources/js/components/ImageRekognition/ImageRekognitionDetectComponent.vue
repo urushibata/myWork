@@ -5,7 +5,7 @@
       <v-sheet color="white" elevation="1" class="pa-2">
         <v-card-text
           >指定の画像をAWS Rekognitionを使用して分析します。<br />
-          以下より画像を選択して画像解析ボタンをクリックしてください。</v-card-text
+          解析する画像(png, jpeg)と解析の種類を選択して画像解析ボタンをクリックしてください。</v-card-text
         >
       </v-sheet>
       <v-row>
@@ -23,12 +23,14 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col class="d-flex" cols="12" sm="2">
+        <v-col class="d-flex" cols="12" sm="3">
           <v-select
             v-model="selectedRekognitionType"
             label="解析の種類"
             return-object
             :items="rekognitionTypes"
+            :hint="selectedRekognitionType.explanation"
+            persistent-hint
             :error="errors.rekognitionType"
             :error-messages="messages.rekognitionType"
           ></v-select>
@@ -92,11 +94,23 @@ export default {
   },
   data: function () {
     return {
-      selectedRekognitionType: { value: "text", text: "テキスト検出" },
+      selectedRekognitionType: null,
       rekognitionTypes: [
-        { value: "faces", text: "顔検出と分析" },
-        { value: "text", text: "テキスト検出" },
-        { value: "labels", text: "ラベル" },
+        {
+          value: "faces",
+          text: "顔検出と分析",
+          explanation: "画像の中から人の顔とその特徴を抽出します。",
+        },
+        {
+          value: "text",
+          text: "テキスト検出",
+          explanation: "画像の中からテキストを抽出します。日本語未対応です。",
+        },
+        {
+          value: "labels",
+          text: "ラベル",
+          explanation: "画像の中からラベリング可能なものを抽出します。",
+        },
       ],
       fileInfo: [],
       errors: {
@@ -169,6 +183,9 @@ export default {
         })
         .finally(() => (this.overlay = false));
     },
+  },
+  created: function () {
+    this.selectedRekognitionType = this.rekognitionTypes[1];
   },
 };
 </script>

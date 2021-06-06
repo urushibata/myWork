@@ -21,7 +21,15 @@
       <v-stepper-items>
         <v-stepper-content step="1">
           <v-card flat class="mb-12">
-            <v-sheet></v-sheet>
+            <v-sheet
+              ><a
+                :href="sampleInvoiceUrl"
+                download="sample_invoice.pdf"
+                target="_brank"
+                 rel="noopener noreferrer"
+                >ここからサンプル納品書をダウンロードできます</a
+              ></v-sheet
+            >
             <v-file-input
               counter
               v-model="fileInfo"
@@ -73,6 +81,7 @@
       </snackbar-component>
       <v-overlay :value="overlay">
         <v-progress-circular indeterminate size="64"></v-progress-circular>
+        {{ overlayMessage }}
       </v-overlay>
     </v-stepper>
   </div>
@@ -100,6 +109,7 @@ export default {
       snackbarColor: null,
       snackbarlink: "",
       overlay: false,
+      overlayMessage: null,
       rekognitionResourcesId: null,
       selectedSortKey: 0,
       sortedPdfPath: null,
@@ -136,7 +146,6 @@ export default {
             console.log(res);
 
             this.openErrorSnackbar("システムエラーが発生しました。");
-            this.closeOverlay();
           }
           this.closeOverlay();
         });
@@ -192,6 +201,7 @@ export default {
     },
     closeOverlay: function () {
       this.overlay = false;
+      this.overlayMessage = null;
     },
   },
   watch: {
@@ -203,6 +213,11 @@ export default {
           this.rekognitionResourcesId = null;
         }
       }
+    },
+  },
+  computed: {
+    sampleInvoiceUrl: function () {
+      return `${this.$store.getters.imageUrl}General/invoice_sample.pdf`;
     },
   },
 };

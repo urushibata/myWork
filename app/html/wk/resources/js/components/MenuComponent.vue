@@ -1,6 +1,13 @@
 
 <template>
   <div>
+    <v-alert outlined dense dismissible type="info">
+      ユーザー名は当サイトに接続したときにランダムに割り振られます。また、当サイトではユーザーを特定するためにcookieを使用しています。<br />
+      cookieはブラウザを閉じるか、または、2時間経過すると削除されます。<br>
+      サイト内でアップロードしたファイルなどの登録データは他のユーザーが見ることはできません。cookieが削除されると自分のファイルも見ることができなくなります。<br />
+      サーバーに保存されたアップロードファイルはAWSに保存され、1日で自動削除されます。
+    </v-alert>
+
     <v-row class="fill-height">
       <template v-for="lg in linkGroups">
         <v-col :key="lg.group" class="mt-2" cols="12">
