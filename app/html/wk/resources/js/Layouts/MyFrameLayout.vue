@@ -25,6 +25,7 @@
     <v-main :class="mainMb">
       <v-container>
         <Breadcrumbs />
+        <message />
         <router-view />
       </v-container>
     </v-main>
@@ -35,10 +36,12 @@
 
 <script>
 import MyProfileComponent from "@/components/MyProfileComponent";
+import Message from "../components/Controll/Message";
 
 export default {
   components: {
     "my-profile-component": MyProfileComponent,
+    message: Message,
   },
   data: function () {
     return {
@@ -48,14 +51,14 @@ export default {
   },
   computed: {
     LoginUserName() {
-      return this.$store.state.userName;
+      return this.$store.getters.userName;
     },
   },
   methods: {
     bottomMargin() {
-      let footerMarginSize = Math.ceil(this.$refs.footer.$el.clientHeight / 4)
+      let footerMarginSize = Math.ceil(this.$refs.footer.$el.clientHeight / 4);
       if (footerMarginSize > 16) {
-          footerMarginSize = 16;
+        footerMarginSize = 16;
       }
 
       this.mainMb = `mb-${footerMarginSize}`;
@@ -66,6 +69,16 @@ export default {
   },
   mounted: function () {
     this.bottomMargin();
-  }
+
+    this.$store.subscribeAction({
+      before: (action, state) => {
+        if (action.type === "setMessages") {
+          console.log(
+            action.payload
+          );
+        }
+      },
+    });
+  },
 };
 </script>

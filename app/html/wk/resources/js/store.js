@@ -6,7 +6,11 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
     state: {
         userName: "",
-        imageUrl: ""
+        imageUrl: "",
+        messages: {
+            type: null,
+            message: []
+        }
     },
     getters: {
         userName: (state) => {
@@ -15,10 +19,19 @@ const store = new Vuex.Store({
         imageUrl: (state) => {
             return state.imageUrl;
         },
+        messageType: (state) => {
+            return state.messages?.type;
+        },
+        messages: (state) => {
+            return state.messages ? state.message : "予期せぬエラーが発生しました。";
+        },
     },
     mutations: {
         setUserName: (state, name) => {
-            return state.userName = name;
+            state.userName = name;
+        },
+        clearMessages: (state) => {
+            state.messages = { type: null, messages: [] };
         },
     },
     actions: {
@@ -29,6 +42,12 @@ const store = new Vuex.Store({
             }).catch(error => {
                 console.error(error);
             });
+        },
+        setMessages(state, type, message) {
+            this.state.messges = {
+                type: type ?? null,
+                message: message ?? [],
+            };
         },
     }
 });

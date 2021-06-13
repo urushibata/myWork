@@ -7,6 +7,7 @@ use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Contracts\Session\Session;
 use Symfony\Component\HttpFoundation\Request;
 use App\Auth\CognitoUserProvider;
+use Illuminate\Support\Facades\Log;
 
 class MyWorkGuard extends SessionGuard implements StatefulGuard
 {
@@ -35,6 +36,10 @@ class MyWorkGuard extends SessionGuard implements StatefulGuard
         $user_name = $this->session->has('user_name')
             ? $this->session->get('user_name')
             : uniqid('guest_', false);
+
+        if (!$this->session->get('user_name')) {
+            Log::debug("create new user: ${user_name}");
+        }
 
         $this->session->put('user_name', $user_name);
 

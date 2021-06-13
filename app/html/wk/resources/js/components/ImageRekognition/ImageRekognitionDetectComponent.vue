@@ -5,7 +5,8 @@
       <v-sheet color="white" elevation="1" class="pa-2">
         <v-card-text
           >指定の画像をAWS Rekognitionを使用して分析します。<br />
-          解析する画像(png, jpeg)と解析の種類を選択して画像解析ボタンをクリックしてください。</v-card-text
+          解析する画像(png,
+          jpeg)と解析の種類を選択して画像解析ボタンをクリックしてください。</v-card-text
         >
       </v-sheet>
       <v-row>
@@ -152,7 +153,6 @@ export default {
         formData.append(`uploadFiles[${i}]`, f.loadedImage)
       );
       formData.append("rekognitionType", this.selectedRekognitionType.value);
-      console.log(this.selectedRekognitionType);
 
       this.overlay = true;
       axios
@@ -160,25 +160,26 @@ export default {
           withCredentials: true,
         })
         .then((response) => {
+          console.log("success: ", response);
+
           response.data.forEach((res) => {
             this.snackbar = true;
             this.snackbarMessage = `アップロードに成功しました。: ${res.resource_original_name}`;
           });
 
-          console.log(response);
           this.fileInfo = [];
         })
         .catch((error) => {
-          let res = error.response;
-          console.log(res.data.errors);
+          console.error("error: ", error);
+          let res = error?.response;
 
-          if (res.status == 422) {
+          if (res?.status == 422) {
             Object.keys(res.data.errors).forEach((key) => {
               this.errors[key] = true;
               this.messages[key] = res.data.errors[key];
             });
           } else {
-            console.error(res);
+            this.$store.dispatch("setMessages", "error");
           }
         })
         .finally(() => (this.overlay = false));

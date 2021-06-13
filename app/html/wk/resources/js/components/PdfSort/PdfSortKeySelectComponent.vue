@@ -77,21 +77,19 @@ export default {
           const res = response.data;
           console.log(response);
 
-          if (!res.detect_result.errors) {
-            this.imageSrc = res.url;
-            this.analysis = res.detect_result["TextDetections"];
-            const imageObj = new Image();
-            imageObj.src = this.imageSrc;
-            imageObj.onload = () => {
-              const result = new RekognitionResult(res.detect_result);
-              this.boundingBox = result.createBoundingBox({
-                imageObj: imageObj,
-              });
-              this.imageDisplay = true;
-            };
+          this.imageSrc = res.url;
+          this.analysis = res.detect_result["TextDetections"];
+          const imageObj = new Image();
+          imageObj.src = this.imageSrc;
+          imageObj.onload = () => {
+            const result = new RekognitionResult(res.detect_result);
+            this.boundingBox = result.createBoundingBox({
+              imageObj: imageObj,
+            });
+            this.imageDisplay = true;
+          };
 
-            clearInterval(this.intervalId);
-          }
+          clearInterval(this.intervalId);
         })
         .catch((error) => {
           const res = error.response;
